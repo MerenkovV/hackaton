@@ -1,7 +1,7 @@
 const {Type} = require('../models/models')
 const ApiError = require('../errors/ApiError')
 
-class TypeController {
+class GuideController {
     async create (req, res, next) {
         const {name} = req.body
         if(!name) return next(ApiError.badRequest('Не введено название типа'))
@@ -16,4 +16,4 @@ class TypeController {
     }
 }
 
-module.exports = new TypeController()
+module.exports = new GuideController()

@@ -1,9 +1,9 @@
 const Router = require('express')
 const router = new Router
-const TypeController = require('../controllers/TypeController')
+const GuideController = require('../controllers/GuideController')
 const checkRole = require('../middleware/checkRoleMiddleware')
 
-router.post('/', checkRole('ADMIN'), TypeController.create)
-router.get('/', TypeController.getAll)
+router.post('/', checkRole('ADMIN'), GuideController.create)
+router.get('/', GuideController.getAll)
 
 module.exports = router
