@@ -12,11 +12,12 @@ module.exports = async function(req, res, next){
         }
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
         req.user = decoded
-        const email = decoded.email
-        const isReal = await User.findOne({where: {email}})
-        if(!isReal) return res.status(401).json({message: "Неверный токен"})
+        const login = decoded.login
+        const user = await User.findOne({where: {login}})
+        if(!user) return next(ApiError.badRequest('Неверный токен'))
         next()
     } catch (error) {
+        console.log(error);
         res.status(401).json({message: "Не авторизован"})
     }
 }

@@ -1,5 +1,5 @@
 const sequelize = require('../db')
-const {DataTypes, STRING, INTEGER, DATE, DATEONLY} = require('sequelize')
+const {STRING, INTEGER, DATEONLY, DataTypes} = require('sequelize')
 
 
 //Справочники
@@ -13,7 +13,7 @@ const User = sequelize.define('user', {
 
 const ServiceCompany = sequelize.define('service_company', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: STRING, allowNull: false},
+    name: {type: STRING, allowNull: false},
     description: {type: STRING, allowNull: false},
 })
 
@@ -60,14 +60,7 @@ const RecoveryMethod = sequelize.define('recovery_method', {
 
 // Окончание справочников
 
-// const Rating = sequelize.define('rating', {
-//     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-//     rate: {type: INTEGER, allowNull: false}
-// })
-
-
-
-const Device = sequelize.define('device', {
+const Machine = sequelize.define('machine', {
     id: {type: STRING, primaryKey: true},
     engine_number: {type: STRING, unique: true, allowNull: false},
     transmission_number: {type: STRING, unique: true, allowNull: false},
@@ -80,61 +73,85 @@ const Device = sequelize.define('device', {
     equipment: {type: STRING, allowNull: false},
 })
 
-const DeviceInfo = sequelize.define('device_info', {
+const Maintenance = sequelize.define('maintenance', { // ТО
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: STRING, allowNull: false},
+    date_maintenance: {type: DATEONLY, allowNull: false},
+    worked: {type: INTEGER, allowNull: false},
+    order: {type: STRING, allowNull: false},
+    date_order: {type: DATEONLY, allowNull: false},
+    downtime: {type: STRING, allowNull: false},
+})
+
+const Complaints = sequelize.define('complaints', { // Рекламации
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    date_complaints: {type: DATEONLY, allowNull: false},
+    worked: {type: INTEGER, allowNull: false},
     description: {type: STRING, allowNull: false},
+    spare_parts: {type: STRING, allowNull: false},
+    date_repair: {type: DATEONLY, allowNull: false},
+
 })
 
-const Type = sequelize.define('type', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: STRING, unique: true, allowNull: false},
-})
+User.hasOne(ServiceCompany)
+ServiceCompany.belongsTo(User)
 
-const Brand = sequelize.define('brand', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: STRING, unique: true, allowNull: false},
-})
+User.hasMany(Machine)
+Machine.belongsTo(User)
 
-const BrandType = sequelize.define('brand_type', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-})
+ServiceCompany.hasMany(Machine)
+Machine.belongsTo(ServiceCompany)
 
-User.hasOne(Basket)
-Basket.belongsTo(User)
+TechniqueModel.hasMany(Machine)
+Machine.belongsTo(TechniqueModel)
 
-User.hasMany(Rating)
-Rating.belongsTo(User)
+EngineModel.hasMany(Machine)
+Machine.belongsTo(EngineModel)
 
-Basket.hasMany(BasketDevice)
-BasketDevice.belongsTo(Basket)
+TransmissionModel.hasMany(Machine)
+Machine.belongsTo(TransmissionModel)
 
-Device.hasMany(BasketDevice)
-BasketDevice.belongsTo(Device)
+DrivingBridgeModel.hasMany(Machine)
+Machine.belongsTo(DrivingBridgeModel)
 
-Device.hasMany(Rating)
-Rating.belongsTo(Device)
+ControlledBridgeModel.hasMany(Machine)
+Machine.belongsTo(ControlledBridgeModel)
 
-Device.hasMany(DeviceInfo, {as: 'info'})
-DeviceInfo.belongsTo(Device)
+DrivingBridgeModel.hasMany(Machine)
+Machine.belongsTo(DrivingBridgeModel)
 
-Type.hasMany(Device)
-Device.belongsTo(Type)
+Machine.hasMany(Maintenance)
+Maintenance.belongsTo(Machine)
 
-Brand.hasMany(Device)
-Device.belongsTo(Brand)
+Machine.hasMany(Complaints)
+Complaints.belongsTo(Machine)
 
-Type.belongsToMany(Brand, {through: BrandType})
-Brand.belongsToMany(Type, {through: BrandType})
+ServiceCompany.hasMany(Maintenance)
+Maintenance.belongsTo(ServiceCompany)
+
+ServiceCompany.hasMany(Complaints)
+Complaints.belongsTo(ServiceCompany)
+
+MaintenanceType.hasMany(Maintenance)
+Maintenance.belongsTo(MaintenanceType)
+
+RefusalType.hasMany(Complaints)
+Complaints.belongsTo(RefusalType)
+
+RecoveryMethod.hasMany(Complaints)
+Complaints.belongsTo(RecoveryMethod)
 
 module.exports = {
     User,
-    Basket,
-    BasketDevice,
-    Rating,
-    Device,
-    DeviceInfo,
-    Type,
-    Brand,
-    BrandType
+    ServiceCompany,
+    TechniqueModel,
+    EngineModel,
+    TransmissionModel,
+    DrivingBridgeModel,
+    ControlledBridgeModel,
+    MaintenanceType,
+    RefusalType,
+    RecoveryMethod,
+    Machine,
+    Maintenance,
+    Complaints,
 }
