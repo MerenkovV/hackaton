@@ -1,0 +1,68 @@
+.card{
+    width: 240px;
+    display: grid;
+    grid-template-rows: auto 110px;
+}
+
+.gridWrapper_withMany{
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.gridWrapper_withFew{
+    grid-template-columns: repeat(auto-fit, 205px);
+}
+.BackColor{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    background: #f5f5f5;
+}
+
+.addBasketButton{
+    display: flex !important;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px !important;
+    background: #6bfb47dc;
+    border: 1px solid #8afe6dd4;
+    cursor: pointer;
+    transition-duration: 250ms;
+}
+
+.addBasketButton:hover{
+    background: #63f93e;
+    border: 1px solid #78e35dac;
+    box-shadow: 0 0 7px 3px #65f94067;
+}
+
+.addBasketButton span{
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+.gridWrapper{
+    gap: 20px 60px;
+    padding: 20px;
+    display: grid;
+}
+
+@media (max-width: 460px){
+    .content{
+        position: absolute;
+        z-index: 1;
+        right: calc(45vw - 139px);
+        top: 100px;
+    }
+    .card{
+        width: 215px;
+    }
+    .BackColor{
+        display: block;
+    }
+}

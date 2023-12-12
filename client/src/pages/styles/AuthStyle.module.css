@@ -1,0 +1,12 @@
+.adminWrapper{
+    padding: 25px 0 0 55px;
+}
+
+@media (max-width: 575px){
+    .adminWrapper{
+        padding: 25px 0 0 5vw;
+    }
+    .ant-col-offset-8{
+        margin-inline-start: auto
+    }
+}

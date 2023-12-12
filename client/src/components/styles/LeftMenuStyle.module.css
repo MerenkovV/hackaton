@@ -1,0 +1,11 @@
+.leftMenu::before{
+    content: '';
+    display: block;
+    background: rgb(0, 21, 41);
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: inherit;
+    height: 100vh;
+    z-index: 1;
+}

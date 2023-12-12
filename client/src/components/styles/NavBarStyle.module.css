@@ -1,0 +1,43 @@
+.logo{
+    display: flex;
+    background-color: rgb(64, 64, 64);
+    width: 131px;
+    height: 33px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.login_panel{
+    display: flex;
+}
+
+.login_panel a{
+    position: relative;
+    margin: 0px 20px;
+    font-size: 25px;
+}
+
+.login_panel a span{
+    position: relative;
+    z-index: 3;
+}
+
+.login_panel a:last-child span{
+    transform: translate(-1px, 2px);
+}
+
+.login_panel a::before{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    background: #043e47;
+    border-radius: 50%;
+    top: 15px;
+    left: -6px;
+    z-index: 2;
+}
