@@ -19,6 +19,7 @@ const ServiceCompany = sequelize.define('service_company', {
 
 const TechniqueModel = sequelize.define('technique_model', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: STRING, unique: true},
     about: {type: STRING, defaultValue: "Нет описания"}
 })
 
