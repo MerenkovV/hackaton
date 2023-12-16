@@ -1,0 +1,61 @@
+{
+    "machinesinfo": [
+        {
+            "factoryNumber": 123,
+            "equipmentModel": "Погрузчик",
+            "engineModel": "Nissan K21",
+            "engineNumber": "123444",
+            "transmissionModel": "HF50-VP020",
+            "transmissionNumber": "20387361",
+            "driveAxleModel": "HA30-02020",
+            "driveAxleNumber": "238433",
+            "steeringAxleModel": "B350655A", 
+            "steeringAxleNumber": "83327",
+            "supplyAgreement": "№223 от 12.01.2023",
+            "shippingDate": "14.02.2023",
+            "consignee": "'ООО' Стройсам",
+            "deliveryAddress": "г. Екатеринбург ул. Павлова д. 34",
+            "equipment": "Доп. освещение, фаркоп, прицеп",
+            "client": "Ступников Павел Игоревич",
+            "serviceCompany": "А2" 
+        },
+        {
+            "factoryNumber": 124,
+            "equipmentModel": "Погрузчик",
+            "engineModel": "Kubota V3300",
+            "engineNumber": "123424",
+            "transmissionModel": "HF50-VP020",
+            "transmissionNumber": "20385361",
+            "driveAxleModel": "HA30-02020",
+            "driveAxleNumber": "233433",
+            "steeringAxleModel": "B350655A", 
+            "steeringAxleNumber": "83397",
+            "supplyAgreement": "№224 от 13.02.2023",
+            "shippingDate": "14.06.2023",
+            "consignee": "'ООО' Стройбыстро",
+            "deliveryAddress": "г. Пермь ул. Ленина д. 14",
+            "equipment": "Доп. освещение, фаркоп, прицеп",
+            "client": "Антонов Павел Игоревич",
+            "serviceCompany": "Б4" 
+        },
+        {
+            "factoryNumber": 125,
+            "equipmentModel": "Погрузчик",
+            "engineModel": "Kubota V3300",
+            "engineNumber": "133424",
+            "transmissionModel": "HF50-VP020",
+            "transmissionNumber": "20185361",
+            "driveAxleModel": "HA30-02020",
+            "driveAxleNumber": "133433",
+            "steeringAxleModel": "B350655A", 
+            "steeringAxleNumber": "83397",
+            "supplyAgreement": "№225 от 16.02.2023",
+            "shippingDate": "19.06.2023",
+            "consignee": "'ООО' СтройЛегко",
+            "deliveryAddress": "г. Красноярск ул. Ленина д. 74",
+            "equipment": "Доп. освещение",
+            "client": "Жуков Сергей Владмимирович",
+            "serviceCompany": "А2" 
+        }
+    ]
+}
