@@ -1,6 +1,5 @@
 const Router = require('express')
 const router = new Router
-const upload = require("../middleware/multer");
 const UserController = require('../controllers/UserController')
 const authMiddleware = require('../middleware/authMiddleware');
 const checkRoleMiddleware = require('../middleware/checkRoleMiddleware');

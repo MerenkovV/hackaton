@@ -1,7 +1,7 @@
 const uuid = require('uuid')
 const path = require('path')
 const ApiError = require('../errors/ApiError')
-const { Machine, User, ServiceCompany, TechniqueModel, EngineModel, TransmissionModel, DrivingBridgeModel, ControlledBridgeModel, Maintenance, MaintenanceType } = require('../models/models')
+const { Machine, ServiceCompany, Maintenance, MaintenanceType } = require('../models/models')
 
     
 class MaintenanceController {
