@@ -34,7 +34,7 @@ class TechniqueController {
             if(userCandidate.role !== "CLIENT") return next(ApiError.badRequest("Пользователь не является клиентом"))
 
             const serviceCandidate = await ServiceCompany.findOne({where: {id: service_id}})
-            if(!serviceCandidate) return next(ApiError.badRequest("Пользователя с данным id не существует"))
+            if(!serviceCandidate) return next(ApiError.badRequest("Сервиса с данным id не существует"))
 
             const machine = await Machine.create({
                 id: technique_id,

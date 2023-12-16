@@ -80,7 +80,7 @@ const Maintenance = sequelize.define('maintenance', { // ТО
     worked: {type: INTEGER, allowNull: false},
     order: {type: STRING, allowNull: false},
     date_order: {type: DATEONLY, allowNull: false},
-    downtime: {type: STRING, allowNull: false},
+    
 })
 
 const Complaints = sequelize.define('complaints', { // Рекламации
@@ -90,7 +90,7 @@ const Complaints = sequelize.define('complaints', { // Рекламации
     description: {type: STRING, allowNull: false},
     spare_parts: {type: STRING, allowNull: false},
     date_repair: {type: DATEONLY, allowNull: false},
-
+    downtime: {type: STRING, allowNull: false},
 })
 
 User.hasOne(ServiceCompany)
