@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useStore } from '../../store/RootStore';
 import { observer } from 'mobx-react-lite';
 import loader from '../../img/gears-spinner.svg'
+import { useEffect } from 'react';
+import { check } from '../../api/userAPI';
 
 const Header = observer(() => {
     const navigate = useNavigate();
@@ -16,6 +18,19 @@ const Header = observer(() => {
         navigate('/');
     }
 
+    useEffect(async ()=>{
+        if(localStorage.getItem('token').length > 0){
+            user.setIsFetching(true)
+            const userData = await check().catch(e=>{alert(e.message)})
+            if(userData){
+                user.setUser(userData)
+                user.setIsAuth(true)
+            }
+            user.setIsFetching(false)
+        }
+        
+    }, [])
+
     return(
     <div className="header">
         <div className="header-first-container">
@@ -23,7 +38,7 @@ const Header = observer(() => {
             <div className='header-info'>
                 <a href='tel:+78352201209'>+7-8352-20-12-09</a>
                 {// eslint-disable-next-line
-                }<a href="https://web.telegram.org/" className='header-tg'>Телеграмм</a>
+                }<a href="https://web.telegram.org/" className='header-tg'>Телеграм</a>
             </div>
             {
                 user.isFetching ? 

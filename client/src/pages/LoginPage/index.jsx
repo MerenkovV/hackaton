@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import './style.css';
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { observer } from 'mobx-react-lite';
 import { useStore } from './../../store/RootStore';
 import { login, registration } from '../../api/userAPI';
 import loader from '../../img/gears-spinner.svg'
 
 const LoginPage = observer(() =>{
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const {user} = useStore()
 
     const [payload, setPayload] = useState({
@@ -63,6 +63,10 @@ const LoginPage = observer(() =>{
                 (user.isAuth ? 
                     <div>
                         <h2>Здравствуйте, {user.user.login}</h2>
+                        <button className="login-page-btn" onClick={()=>{
+                            localStorage.setItem('token', '')
+                            user.setIsAuth(false)
+                        }}>Выйти из аккаунта</button>
                         <div className="login-page-title">Добавить пользователя</div>
                         <div className="login-page-form">
                             <input placeholder="Логин" className="login-page-input login-label" value={payload.login}
