@@ -62,7 +62,7 @@ const RecoveryMethod = sequelize.define('recovery_method', {
 // Окончание справочников
 
 const Machine = sequelize.define('machine', {
-    id: {type: STRING, primaryKey: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true},
     engine_number: {type: STRING, unique: true, allowNull: false},
     transmission_number: {type: STRING, unique: true, allowNull: false},
     driving_bridge_number: {type: STRING, unique: true, allowNull: false},
@@ -116,9 +116,6 @@ Machine.belongsTo(DrivingBridgeModel)
 
 ControlledBridgeModel.hasMany(Machine)
 Machine.belongsTo(ControlledBridgeModel)
-
-DrivingBridgeModel.hasMany(Machine)
-Machine.belongsTo(DrivingBridgeModel)
 
 Machine.hasMany(Maintenance)
 Maintenance.belongsTo(Machine)
