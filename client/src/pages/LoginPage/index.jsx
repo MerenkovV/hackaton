@@ -67,23 +67,30 @@ const LoginPage = observer(() =>{
                             localStorage.setItem('token', '')
                             user.setIsAuth(false)
                         }}>Выйти из аккаунта</button>
-                        <div className="login-page-title">Добавить пользователя</div>
-                        <div className="login-page-form">
-                            <input placeholder="Логин" className="login-page-input login-label" value={payload.login}
-                                onChange={(e)=>{setPayload({login: e.target.value, password: payload.password, role: payload.role})}}/>
-                            <input placeholder="Пароль" className="login-page-input password-label" value={payload.password}
-                                onChange={(e)=>{setPayload({login: payload.login, password: e.target.value, role: payload.role})}}/>
-                            <select name="role" id="login-page-select"
-                                value={payload.role}
-                                onChange={(e)=>setPayload({login: payload.login, password: payload.password, role: e.target.value})}>
-                                <option value="">--Роль пользователя--</option>
-                                <option value="ADMIN">ADMIN</option>
-                                <option value="MANAGER">MANAGER</option>
-                                <option value="CLIENT">CLIENT</option>
-                                <option value="SERVICE">SERVICE</option>
-                            </select>
-                            <button className="login-page-btn" onClick={addUser}>Зарегистрировать</button>
-                        </div>
+                        {user.user.role==='ADMIN' ? 
+                            <> 
+                            <div className="login-page-title">Добавить пользователя</div>
+                            <div className="login-page-form">
+                                <input placeholder="Логин" className="login-page-input login-label" value={payload.login}
+                                    onChange={(e)=>{setPayload({login: e.target.value, password: payload.password, role: payload.role})}}/>
+                                <input placeholder="Пароль" className="login-page-input password-label" value={payload.password}
+                                    onChange={(e)=>{setPayload({login: payload.login, password: e.target.value, role: payload.role})}}/>
+                                <select name="role" id="login-page-select"
+                                    value={payload.role}
+                                    onChange={(e)=>setPayload({login: payload.login, password: payload.password, role: e.target.value})}>
+                                    <option value="">--Роль пользователя--</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="MANAGER">MANAGER</option>
+                                    <option value="CLIENT">CLIENT</option>
+                                    <option value="SERVICE">SERVICE</option>
+                                </select>
+                                <button className="login-page-btn" onClick={addUser}>Зарегистрировать</button>
+                            </div>
+                            </> 
+                        : 
+                            <></>
+                        }
+                       
                     </div>
                     
                     : 

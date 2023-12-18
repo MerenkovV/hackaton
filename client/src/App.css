@@ -7,6 +7,10 @@
   font-family: 'PT Sans', sans-serif;
 }
 
+.main{
+  position: relative;
+}
+
 a{
   text-decoration: none;
   color: black;

@@ -111,6 +111,8 @@ class TechniqueController {
                 ]
             })
 
+            if(!machine) return next(ApiError.badRequest("Машина не найдена"))
+            
             return res.json({
                 "id": machine.id,
                 "techniqueModelId": machine.techniqueModelId,

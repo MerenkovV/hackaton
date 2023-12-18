@@ -97,3 +97,9 @@
 .main-page-info-head-tr > th:last-child{
     border-top-right-radius: 10px;
 }
+
+@media(max-width: 520px){
+    .main-page{
+        margin-top: 10px;
+    }
+}

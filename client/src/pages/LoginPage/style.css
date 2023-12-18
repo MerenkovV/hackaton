@@ -36,3 +36,9 @@
     height: 25px;
     cursor: pointer;
 }
+
+@media(max-width: 520px){
+    .login-page{
+        margin-top: 0px;
+    }
+}

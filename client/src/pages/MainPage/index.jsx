@@ -1,12 +1,16 @@
+import { observer } from 'mobx-react-lite';
+import { getOne } from '../../api/machineAPI';
 import machines from '../../mockdata/machines.json';
+import { useStore } from '../../store/RootStore';
 import './style.css';
 import { useState } from 'react';
 
-const MainPage = () =>{
-    const [inputID, setInputID] = useState(); //Заводской № машины введенный в поисковую строку
+const MainPage = observer(() =>{
+    const [inputID, setInputID] = useState(''); //Заводской № машины введенный в поисковую строку
     const [foundMachine, setMachine] = useState(); //Найденная машина
     const [errorMessage, setErrorMessage] = useState();
     const [tableType, setTableType] = useState('info');
+    const {machine, user} = useStore()
 
     const inputHandle = (inputID) =>{
         setMachine();
@@ -16,13 +20,18 @@ const MainPage = () =>{
         setTableType('info')
     }
 
-    const findMachine = () => {
-        let Machine = machines.machinesinfo.find((machine) => machine.factoryNumber === Number(inputID));
-        setMachine(Machine);
-        setTableType('info');
-        if(!Machine){
-            setErrorMessage('Ничего не найдено');
+    const findMachine = async () => {
+        if(inputID.length > 0){
+            machine.setIsFetching(true)
+            const machineInfo = await getOne(inputID)
+            if(machineInfo) machine.setMachine(machineInfo)
+            machine.setIsFetching(false)
+            setTableType('info');
+            if(!machineInfo){
+                setErrorMessage('Ничего не найдено');
+            }
         }
+        
     }
 
     const handleTableType = (type) => {
@@ -45,10 +54,14 @@ const MainPage = () =>{
     return(
         <div className='main-page'>
             <div className='main-page-title'>Проверьте комплектацию и технические характеристики техники Силант</div>
-            <div className='main-page-search-block'>
-                <input className='main-page-input' placeholder='Заводской номер' type='text' onChange={inputHandle} value={inputID}/>
-                <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
-            </div>
+            
+            {
+                user.isAuth ? <></> :
+                <div className='main-page-search-block'>
+                    <input className='main-page-input' placeholder='Заводской номер' type='text' onChange={inputHandle} value={inputID}/>
+                    <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
+                </div>
+            }
 
             <div>
                 {foundMachine && tableType === 'info' ? 
@@ -92,6 +105,6 @@ const MainPage = () =>{
             </div>
         </div>
     )
-}
+})
 
 export default MainPage

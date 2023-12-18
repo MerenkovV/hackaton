@@ -1,8 +1,10 @@
 import { useContext, createContext } from "react";
 import UserStore from "./UserStore";
+import MachineStore from "./MachineStore";
 
 export default class RootStore {
     user = new UserStore()
+    machine = new MachineStore()
 }
 
 export const Context = createContext(null)

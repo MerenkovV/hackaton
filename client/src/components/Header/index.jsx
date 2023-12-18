@@ -34,12 +34,8 @@ const Header = observer(() => {
     return(
     <div className="header">
         <div className="header-first-container">
-            <img src={logo} alt="logo" className='header-logo' onClick={redirectToMain}/>
-            <div className='header-info'>
-                <a href='tel:+78352201209'>+7-8352-20-12-09</a>
-                {// eslint-disable-next-line
-                }<a href="https://web.telegram.org/" className='header-tg'>Телеграм</a>
-            </div>
+            <img src={logo} alt="logo" className='header-logo' height='50px' onClick={redirectToMain}/>
+            
             {
                 user.isFetching ? 
                 <img src={loader} width='50px'/> 
@@ -47,6 +43,10 @@ const Header = observer(() => {
                 <button className='header-auth' onClick={redirectToLogin}>{user.isAuth ? user.user.login : 'Авторизация'}</button>
             }
             
+        </div>
+        <div className='header-second-container'>
+            <a href='tel:+78352201209'>+7-8352-20-12-09</a>
+            <a href="https://web.telegram.org/" className='header-tg'>Телеграм</a>
         </div>
         <div className='header-title'>
             Электронная сервисная книжка "Мой&nbsp;Силант"
