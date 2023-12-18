@@ -24,7 +24,7 @@ const Header = observer(() => {
             check().then((userData)=>{
                 user.setUser(userData)
                 user.setIsAuth(true)
-            }).catch(e=>{alert(e.message)}).finally(()=>user.setIsFetching(false))
+            }).catch(e=>{console.log(e.message)}).finally(()=>user.setIsFetching(false))
         }else{
             user.setIsFetching(false)
         }
@@ -38,7 +38,7 @@ const Header = observer(() => {
             
             {
                 user.isFetching ? 
-                <img src={loader} width='50px'/> 
+                <img src={loader} alt='' width='50px'/> 
                 : 
                 <button className='header-auth' onClick={redirectToLogin}>{user.isAuth ? user.user.login : 'Авторизация'}</button>
             }

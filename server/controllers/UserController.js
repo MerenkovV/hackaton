@@ -1,7 +1,7 @@
 const ApiError = require('../errors/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User, ServiceCompany} = require('../models/models')
+const {User, ServiceCompany, ClientCompany} = require('../models/models')
 
 const generateJWT = (id, login, role) => {
     return jwt.sign(
@@ -18,11 +18,12 @@ class UserController {
         const candidate = await User.findOne({where: {login}})
         if(candidate) return next(ApiError.badRequest('Пользователь с таким login уже существует'))
         const hashPassword = await bcrypt.hash(password, 5)
-        if (role === "SERVICE") {
+        if (role === "SERVICE" || role === "CLIENT") {
             try {
-                if(!name || !description) return next(ApiError.badRequest('Требуется название и описание сервисной компании'))
+                if(!name || !description) return next(ApiError.badRequest('Требуется название и описание компании'))
                 const user = await User.create({login, role, password: hashPassword})
-                await ServiceCompany.create({userId: user.id, name, description})
+                if (role === "SERVICE") await ServiceCompany.create({userId: user.id, name, description})
+                if (role === "CLIENT") await ClientCompany.create({userId: user.id, name, description})
             } catch (error) {
                 return next(ApiError.badRequest(error.message))
             }

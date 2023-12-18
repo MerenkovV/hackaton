@@ -17,6 +17,12 @@ const ServiceCompany = sequelize.define('service_company', {
     description: {type: STRING, allowNull: false},
 })
 
+const ClientCompany = sequelize.define('client_company', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: STRING, allowNull: false},
+    description: {type: STRING, allowNull: false},
+})
+
 const TechniqueModel = sequelize.define('technique_model', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: STRING, unique: true},
@@ -96,6 +102,9 @@ const Complaints = sequelize.define('complaints', { // Рекламации
 User.hasOne(ServiceCompany)
 ServiceCompany.belongsTo(User)
 
+User.hasOne(ClientCompany)
+ClientCompany.belongsTo(User)
+
 User.hasMany(Machine)
 Machine.belongsTo(User)
 
@@ -141,6 +150,7 @@ Complaints.belongsTo(RecoveryMethod)
 module.exports = {
     User,
     ServiceCompany,
+    ClientCompany,
     TechniqueModel,
     EngineModel,
     TransmissionModel,

@@ -13,9 +13,14 @@ export const getAll = async (login, password) => {
 }
 
 export const getOne = async (id) => {
-    const {data} = await $host.get(`/api/technique/${id}`)
-    if(data){
-        console.log(data);
-        return jwtDecode(data)
+    try {
+        const {data} = await $host.get(`/api/technique/${id}`)
+        if(data){
+            return jwtDecode(data)
+        }
+    } catch (error) {
+        if(error.message === 'Машина не найдена') return jwtDecode({})
+            else console.log(error.message);
     }
+    
 }

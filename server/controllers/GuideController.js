@@ -1,4 +1,4 @@
-const {TechniqueModel, EngineModel, TransmissionModel, DrivingBridgeModel, ControlledBridgeModel, MaintenanceType, RefusalType, RecoveryMethod} = require('../models/models')
+const {TechniqueModel, EngineModel, TransmissionModel, DrivingBridgeModel, ControlledBridgeModel, MaintenanceType, RefusalType, RecoveryMethod, ServiceCompany, ClientCompany} = require('../models/models')
 const ApiError = require('../errors/ApiError')
 
 class GuideController {
@@ -143,16 +143,17 @@ class GuideController {
         return res.json(guide)
     }
     async get (req, res) {
-        const {technique, engine, transmission, driving, controlled, maintenance, refusal, recovery} = req.query
         let resultObject = {}
-        if(technique) resultObject['technique'] = await TechniqueModel.findOne({where: {id: technique}})
-        if(engine) resultObject['engine'] = await EngineModel.findOne({where: {id: engine}})
-        if(transmission) resultObject['transmission'] = await TransmissionModel.findOne({where: {id: transmission}})
-        if(driving) resultObject['driving'] = await DrivingBridgeModel.findOne({where: {id: driving}})
-        if(controlled) resultObject['controlled'] = await ControlledBridgeModel.findOne({where: {id: controlled}})
-        if(maintenance) resultObject['maintenance'] = await MaintenanceType.findOne({where: {id: maintenance}})
-        if(refusal) resultObject['refusal'] = await RefusalType.findOne({where: {id: refusal}})
-        if(recovery) resultObject['recovery'] = await RecoveryMethod.findOne({where: {id: recovery}})
+        resultObject['technique'] = await TechniqueModel.findAll()
+        resultObject['engine'] = await EngineModel.findAll()
+        resultObject['transmission'] = await TransmissionModel.findAll()
+        resultObject['driving'] = await DrivingBridgeModel.findAll()
+        resultObject['controlled'] = await ControlledBridgeModel.findAll()
+        resultObject['maintenance'] = await MaintenanceType.findAll()
+        resultObject['refusal'] = await RefusalType.findAll()
+        resultObject['recovery'] = await RecoveryMethod.findAll()
+        resultObject['service'] = await ServiceCompany.findAll()
+        resultObject['clients'] = await ClientCompany.findAll()
 
         return res.json(resultObject)
     }

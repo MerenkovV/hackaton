@@ -27,7 +27,9 @@ const LoginPage = observer(() =>{
                 setPayload({
                     login: '',
                     password: '',
-                    role: ''
+                    role: '',
+                    name: '',
+                    about: ''
                 })
                 user.setIsAuth(true)
             }
@@ -44,7 +46,10 @@ const LoginPage = observer(() =>{
         try{
             
             if(payload.login.length > 0 && payload.password.length > 0 && payload.role.length > 0){
-                await registration(payload.login, payload.password, payload.role)
+                if(payload.role === "CLIENT" && payload.role === "SERVICE"){
+                    if(payload.role.name > 0 && payload.role.about > 0)  await registration(payload.login, payload.password, payload.role, payload.name, payload.about)
+                }else await registration(payload.login, payload.password, payload.role)
+                
                 alert('Пользователь добавлен')
             }
             if(payload.login.length === 0) alert("Введите логин")
@@ -72,18 +77,36 @@ const LoginPage = observer(() =>{
                             <div className="login-page-title">Добавить пользователя</div>
                             <div className="login-page-form">
                                 <input placeholder="Логин" className="login-page-input login-label" value={payload.login}
-                                    onChange={(e)=>{setPayload({login: e.target.value, password: payload.password, role: payload.role})}}/>
+                                    onChange={(e)=>{
+                                        setPayload({...payload, login: e.target.value})
+                                    }}/>
                                 <input placeholder="Пароль" className="login-page-input password-label" value={payload.password}
-                                    onChange={(e)=>{setPayload({login: payload.login, password: e.target.value, role: payload.role})}}/>
+                                    onChange={(e)=>{
+                                            setPayload({...payload, password: e.target.value})
+                                        }}/>
                                 <select name="role" id="login-page-select"
                                     value={payload.role}
-                                    onChange={(e)=>setPayload({login: payload.login, password: payload.password, role: e.target.value})}>
+                                    onChange={(e)=>{
+                                        setPayload({...payload, role: e.target.value})
+                                    }}>
                                     <option value="">--Роль пользователя--</option>
                                     <option value="ADMIN">ADMIN</option>
                                     <option value="MANAGER">MANAGER</option>
                                     <option value="CLIENT">CLIENT</option>
                                     <option value="SERVICE">SERVICE</option>
                                 </select>
+                                {
+                                    ((payload.role === 'CLIENT') || (payload.role === 'SERVICE')) && <>
+                                        <input placeholder="Название" className="login-page-input login-label" value={payload.name}
+                                            onChange={(e)=>{
+                                                setPayload({...payload, name: e.target.value})
+                                            }}/>
+                                        <input placeholder="Описание" className="login-page-input password-label" value={payload.about}
+                                            onChange={(e)=>{
+                                                setPayload({...payload, about: e.target.value})
+                                            }}/>
+                                    </>
+                                }
                                 <button className="login-page-btn" onClick={addUser}>Зарегистрировать</button>
                             </div>
                             </> 

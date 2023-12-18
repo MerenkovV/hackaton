@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import { getOne } from '../../api/machineAPI';
-import machines from '../../mockdata/machines.json';
 import { useStore } from '../../store/RootStore';
 import './style.css';
 import { useState } from 'react';
+import loader from '../../img/gears-spinner.svg'
+import Table from '../../components/Table/Table';
 
 const MainPage = observer(() =>{
     const [inputID, setInputID] = useState(''); //Заводской № машины введенный в поисковую строку
@@ -24,7 +25,10 @@ const MainPage = observer(() =>{
         if(inputID.length > 0){
             machine.setIsFetching(true)
             const machineInfo = await getOne(inputID)
-            if(machineInfo) machine.setMachine(machineInfo)
+            if(machineInfo) {
+                machine.setMachine(machineInfo)
+                machine.setIsLoaded(true)
+            }
             machine.setIsFetching(false)
             setTableType('info');
             if(!machineInfo){
@@ -62,9 +66,10 @@ const MainPage = observer(() =>{
                     <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
                 </div>
             }
-
-            <div>
-                {foundMachine && tableType === 'info' ? 
+            {
+                machine.isFetching ? <img src={loader} alt="" width='80px'/> :
+                <div>
+                {user.isAuth === false && machine.isLoaded ? 
                 <div className='main-page-info-block'>
                     <div>Информация о комплектации и технических характеристиках Вашей техники</div>
                     <div className='main-page-type-of-tables'>
@@ -72,37 +77,25 @@ const MainPage = observer(() =>{
                         <button onClick={() => handleTableType('to')} style={{background: tableType === 'to' ? '#3f87d9' : '#163e6c' }}>ТО</button>
                         <button onClick={() => handleTableType('advertising')} style={{background: tableType === 'advertising' ? '#3f87d9' : '#163e6c' }}>Рекламация</button>
                     </div>
-                    <table>
-                        <thead>
-                            <tr className='main-page-info-head-tr'>
-                                <th>Зав. № машины</th>
-                                <th>Дата отгрузки с завода</th>
-                                <th>Модель техники</th>
-                                <th>Модель двигателя</th>
-                                <th>Модель трансмиссии</th>
-                                <th>Модель управляемого моста</th>
-                                <th>Модель ведущего моста</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr className='main-page-info-tr'>
-                                <td>{foundMachine.factoryNumber}</td>
-                                <td>{foundMachine.shippingDate}</td>
-                                <td>{foundMachine.equipmentModel}</td>
-                                <td>{foundMachine.engineModel}</td>
-                                <td>{foundMachine.transmissionModel}</td>
-                                <td>{foundMachine.driveAxleModel}</td>
-                                <td>{foundMachine.steeringAxleModel}</td>
-                            </tr> 
-                    </tbody>
-                    </table>
+                    <Table type={''} data={''}/>
+                    <div className='main-page-error'>
+                        {errorMessage}
+                    </div> 
                  </div> : 
-                 <div className='main-page-error'>
-                    {errorMessage}
-                 </div>  
+                 <>
+                    {
+                        user.isAuth ? 
+                        <>
+                        <button className='button-admin' style={{background: '#163e6c' }}>Добавить</button>
+                        <button className='button-admin' style={{background: '#163e6c' }}>Изменить</button>
+                        </> : <></>
+                    }
+                 </>
+                 
                 }
-            </div>
+                </div>
+            }
+            
         </div>
     )
 })

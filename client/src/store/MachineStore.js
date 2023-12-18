@@ -4,6 +4,7 @@ export default class MachineStore {
 
     constructor(){
         this._isFetching = false
+        this._isLoaded = false
         this._machine = {}
         makeAutoObservable(this)
     }
@@ -11,16 +12,24 @@ export default class MachineStore {
     setIsFetching(fetching){
         this._isFetching = fetching
     }
+    
+    setIsLoaded(loaded){
+        this._isLoaded = loaded
+    }
 
-    setMachine(machindData){
-        this._machine = machindData
+    setMachine(machineData){
+        this._machine = machineData
     }
 
     get isFetching(){
         return this._isFetching
     }
 
-    get user(){
+    get isLoaded(){
+        return this._isLoaded
+    }
+
+    get machine(){
         return this._machine
     }
 }
