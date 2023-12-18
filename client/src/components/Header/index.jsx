@@ -18,14 +18,14 @@ const Header = observer(() => {
         navigate('/');
     }
 
-    useEffect(async ()=>{
-        if(localStorage.getItem('token').length > 0){
-            user.setIsFetching(true)
-            const userData = await check().catch(e=>{alert(e.message)})
-            if(userData){
+    useEffect(()=>{
+        user.setIsFetching(true)
+        if(localStorage.getItem('token') && localStorage.getItem('token').length > 0){
+            check().then((userData)=>{
                 user.setUser(userData)
                 user.setIsAuth(true)
-            }
+            }).catch(e=>{alert(e.message)}).finally(()=>user.setIsFetching(false))
+        }else{
             user.setIsFetching(false)
         }
         
