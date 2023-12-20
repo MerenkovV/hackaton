@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from './../../store/RootStore';
 import { login, registration } from '../../api/userAPI';
 import loader from '../../img/gears-spinner.svg'
+import GuideCreator from '../../components/GuideCreator/GuideCreator';
 
 const LoginPage = observer(() =>{
     //const navigate = useNavigate();
@@ -27,6 +28,13 @@ const LoginPage = observer(() =>{
             about: ''
         })
     }
+
+    const guideCreatorData = [
+        {name: 'Модель техники', endpoint: 'technique'},  {name: 'Модель двигателя', endpoint: 'engine'},
+        {name: 'Модель трансмиссии', endpoint: 'transmission'},  {name: 'Модель ведущего моста', endpoint: 'driving'},
+        {name: 'Модель управляемого моста', endpoint: 'controlled'},  {name: 'Вид ТО', endpoint: 'maintenance'},
+        {name: 'Характер отказа', endpoint: 'refusal'},  {name: 'Способ восстановления', endpoint: 'recovery'},
+    ]
 
     const signIn = async () => {
 
@@ -127,11 +135,19 @@ const LoginPage = observer(() =>{
                                     waiting ? <img src={loader} alt="" width='60px'/> :
                                     <button className="login-page-btn" onClick={addUser}>Зарегистрировать</button>
                                 }
-                                
                             </div>
                             </> 
                         : 
-                            <></>
+                            <>
+                                {
+                                  user.user.role==='MANAGER' && 
+                                    <div className='guide-wrapper'>
+                                    {
+                                        guideCreatorData.map((item, index)=><GuideCreator key={index} name={item.name} endpoint={item.endpoint}/>)
+                                    }
+                                    </div>
+                                }
+                            </>
                         }
                        
                     </div>

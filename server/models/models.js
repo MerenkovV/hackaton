@@ -68,7 +68,7 @@ const RecoveryMethod = sequelize.define('recovery_method', {
 // Окончание справочников
 
 const Machine = sequelize.define('machine', {
-    id: {type: DataTypes.INTEGER, primaryKey: true},
+    id: {type: STRING, unique: true, primaryKey: true},
     engine_number: {type: STRING, unique: true, allowNull: false},
     transmission_number: {type: STRING, unique: true, allowNull: false},
     driving_bridge_number: {type: STRING, unique: true, allowNull: false},

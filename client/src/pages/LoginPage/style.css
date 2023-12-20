@@ -37,6 +37,12 @@
     cursor: pointer;
 }
 
+.guide-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 @media(max-width: 520px){
     .login-page{
         margin-top: 0px;

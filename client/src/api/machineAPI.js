@@ -10,13 +10,13 @@ export const add = async ({technique_id, technique_model, engine_model, engine_n
         transmission_model, transmission_number, driving_model, driving_number,
         controlled_model, controlled_number, delivery_number, shipment_date,
         end_user, delivery_address, equipment, client_id, service_id })
-    return jwtDecode(data)
+    return data
 }
 
 export const getAll = async (login, password) => {
     const {data} = await $host.post('api/user/login', {login, password})
     localStorage.setItem('token', data.token)
-    return jwtDecode(data.token)
+    return data
 }
 
 export const getOne = async (id) => {

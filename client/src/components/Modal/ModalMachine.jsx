@@ -5,6 +5,7 @@ import {PlusCircleOutlined} from '@ant-design/icons'
 import './ModalMachine.css'
 import { add } from '../../api/machineAPI'
 import loader from '../../img/gears-spinner.svg'
+import GuideCreator from '../GuideCreator/GuideCreator'
 
 const ModalMachine = observer(({setIsOpened}) => {
 
@@ -30,6 +31,14 @@ const ModalMachine = observer(({setIsOpened}) => {
     service_id: {value: '', isChecked: false},
   })
 
+  const [adding, setAdding] = useState({
+    technique: false,
+    engine: false,
+    transmission: false,
+    driving: false,
+    controlled: false,
+  })
+
   const clearInput = () => {
     let pushEl = {...payload}
     for(let key in payload){  
@@ -37,23 +46,35 @@ const ModalMachine = observer(({setIsOpened}) => {
         pushEl[key].value = ''
     }
     setPayload({...pushEl})
+    setAdding({
+      technique: false,
+      engine: false,
+      transmission: false,
+      driving: false,
+      controlled: false,
+    })
   }
 
   const addMachine = async () => {
     let errors = 0
+    let payloadValues = {}
     for(let key in payload){
       if(payload[key].value.length === 0){
         errors++
         let pushEl = {...payload}
         pushEl[key].isChecked = true
+        
         setPayload({...pushEl})
       }
+      payloadValues[key] = payload[key].value
     }
     if(errors === 0){
       setLoading(true)
-      await add(payload).catch(e=>console.log(e.message))
-      clearInput()
-      alert('Машина добавлена')
+      await add(payloadValues).then(()=>{
+        clearInput()
+        alert('Машина добавлена')
+      }).catch(e=>console.log(e.message))
+      
       setLoading(false)
     }
   }
@@ -80,12 +101,19 @@ const ModalMachine = observer(({setIsOpened}) => {
                   value={payload.technique_model.value} onChange={(e)=>{
                     setPayload({...payload, technique_model: {value: e.target.value, isChecked: true}})
                   }}>
+                    <option value="">------</option>
                   {
-                    guide.guide?.technique?.map(item=><option value={item.id}>{item.name}</option>)
+                    guide.guide?.technique?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                   }
                 </select>
-                <button className='select-button'><PlusCircleOutlined /></button>
+                <button className='select-button' onClick={()=>{
+                  const newValue = !adding.technique
+                  setAdding({...adding, technique: newValue})
+                }}><PlusCircleOutlined /></button>
               </div>
+              {
+                adding.technique && <GuideCreator name='Модель техники' endpoint='technique' integrated={true}/>
+              }
             </div>
 
             <div className='input-wrapper'>
@@ -96,12 +124,19 @@ const ModalMachine = observer(({setIsOpened}) => {
                   value={payload.engine_model.value} onChange={(e)=>{
                     setPayload({...payload, engine_model: {value: e.target.value, isChecked: true}})
                   }}>
+                    <option value="">------</option>
                   {
-                    guide.guide?.engine?.map(item=><option value={item.id}>{item.name}</option>)
+                    guide.guide?.engine?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                   }
                 </select>
-                <button className='select-button'><PlusCircleOutlined /></button>
+                <button className='select-button' onClick={()=>{
+                  const newValue = !adding.engine
+                  setAdding({...adding, engine: newValue})
+                }}><PlusCircleOutlined /></button>
               </div>
+              {
+                adding.engine && <GuideCreator name='Модель двигателя' endpoint='engine' integrated={true}/>
+              }
             </div>
 
             <div className='input-wrapper'>
@@ -121,13 +156,19 @@ const ModalMachine = observer(({setIsOpened}) => {
                 value={payload.transmission_model.value} onChange={(e)=>{
                   setPayload({...payload, transmission_model: {value: e.target.value, isChecked: true}})
                 }}>
+                  <option value="">------</option>
                   {
-                    guide.guide?.transmission?.map(item=><option value={item.id}>{item.name}</option>)
+                    guide.guide?.transmission?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                   }
                 </select>
-                <button className='select-button'><PlusCircleOutlined /></button>
+                <button className='select-button' onClick={()=>{
+                  const newValue = !adding.transmission
+                  setAdding({...adding, transmission: newValue})
+                }}><PlusCircleOutlined /></button>
             </div>
-            
+              {
+                adding.transmission && <GuideCreator name='Модель трансмиссии' endpoint='transmission' integrated={true}/>
+              }
             </div>
 
             <div className='input-wrapper'>
@@ -147,12 +188,19 @@ const ModalMachine = observer(({setIsOpened}) => {
                 value={payload.driving_model.value} onChange={(e)=>{
                   setPayload({...payload, driving_model: {value: e.target.value, isChecked: true}})
                 }}>
+                  <option value="">------</option>
                 {
-                  guide.guide?.driving?.map(item=><option value={item.id}>{item.name}</option>)
+                  guide.guide?.driving?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                 }
               </select>
-              <button className='select-button'><PlusCircleOutlined /></button>
+              <button className='select-button' onClick={()=>{
+                  const newValue = !adding.driving
+                  setAdding({...adding, driving: newValue})
+                }}><PlusCircleOutlined /></button>
             </div>
+              {
+                adding.driving && <GuideCreator name='Модель ведущего моста' endpoint='driving' integrated={true}/>
+              }
             </div>
 
             <div className='input-wrapper'>
@@ -172,12 +220,19 @@ const ModalMachine = observer(({setIsOpened}) => {
                 value={payload.controlled_model.value} onChange={(e)=>{
                   setPayload({...payload, controlled_model: {value: e.target.value, isChecked: true}})
                 }}>
+                  <option value="">------</option>
                 {
-                  guide.guide?.controlled?.map(item=><option value={item.id}>{item.name}</option>)
+                  guide.guide?.controlled?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                 }
               </select>
-              <button className='select-button'><PlusCircleOutlined /></button>
+              <button className='select-button' onClick={()=>{
+                  const newValue = !adding.controlled
+                  setAdding({...adding, controlled: newValue})
+                }}><PlusCircleOutlined /></button>
             </div>
+              {
+                adding.controlled && <GuideCreator name='Модель управляемого моста' endpoint='controlled' integrated={true}/>
+              }
             </div>
 
             <div className='input-wrapper'>
@@ -204,7 +259,8 @@ const ModalMachine = observer(({setIsOpened}) => {
                 && payload.shipment_date.value.length === 0 && 'input-error'}`} type="date"
                 value={payload.shipment_date.value} onChange={(e)=>{
                   setPayload({...payload, shipment_date: {value: e.target.value, isChecked: true}})
-                }}/>
+                }}
+                onClick={()=>console.log(payload.shipment_date.value)}/>
             </div>
 
             <div className='input-wrapper'>
@@ -243,7 +299,7 @@ const ModalMachine = observer(({setIsOpened}) => {
                 }}>
                   <option value="">------</option>
                 {
-                  guide.guide?.clients?.map(item=><option value={item.id}>{item.name}</option>)
+                  guide.guide?.clients?.map(item=><option key={item.id} value={item.userId}>{item.name}</option>)
                 }
               </select>
             </div>
@@ -257,7 +313,7 @@ const ModalMachine = observer(({setIsOpened}) => {
                 }}>
                   <option value="">------</option>
                 {
-                  guide.guide?.service?.map(item=><option value={item.id}>{item.name}</option>)
+                  guide.guide?.service?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                 }
               </select>
             </div>
