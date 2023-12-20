@@ -2,16 +2,29 @@ import { observer } from 'mobx-react-lite';
 import { getOne } from '../../api/machineAPI';
 import { useStore } from '../../store/RootStore';
 import './style.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import loader from '../../img/gears-spinner.svg'
 import Table from '../../components/Table/Table';
+import ModalMachine from './../../components/Modal/ModalMachine';
+import { get } from '../../api/guideAPI';
 
 const MainPage = observer(() =>{
     const [inputID, setInputID] = useState(''); //Заводской № машины введенный в поисковую строку
     const [foundMachine, setMachine] = useState(); //Найденная машина
+    const [isOpened, setIsOpened] = useState(false)
     const [errorMessage, setErrorMessage] = useState();
     const [tableType, setTableType] = useState('info');
-    const {machine, user} = useStore()
+    const {machine, user, guide} = useStore()
+
+    useEffect(()=>{
+        guide.setIsFetching(true)
+        get().then(data=>guide.setGuide(data))
+            .catch(e=>console.log(e.message))
+            .finally(()=>{
+                guide.setIsFetching(false)
+                console.log(guide.guide);
+            })
+    }, [])
 
     const inputHandle = (inputID) =>{
         setMachine();
@@ -57,6 +70,9 @@ const MainPage = observer(() =>{
 
     return(
         <div className='main-page'>
+            {
+                isOpened ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
+            }
             <div className='main-page-title'>Проверьте комплектацию и технические характеристики техники Силант</div>
             
             {
@@ -67,7 +83,7 @@ const MainPage = observer(() =>{
                 </div>
             }
             {
-                machine.isFetching ? <img src={loader} alt="" width='80px'/> :
+                (machine.isFetching || guide.isFetching) ? <img src={loader} alt="" width='80px'/> :
                 <div>
                 {user.isAuth === false && machine.isLoaded ? 
                 <div className='main-page-info-block'>
@@ -86,7 +102,8 @@ const MainPage = observer(() =>{
                     {
                         user.isAuth ? 
                         <>
-                        <button className='button-admin' style={{background: '#163e6c' }}>Добавить</button>
+                        <button className='button-admin' style={{background: '#163e6c' }}
+                            onClick={()=>setIsOpened(true)}>Добавить</button>
                         <button className='button-admin' style={{background: '#163e6c' }}>Изменить</button>
                         </> : <></>
                     }

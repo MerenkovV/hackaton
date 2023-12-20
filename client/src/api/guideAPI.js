@@ -11,7 +11,7 @@ export const put = async (name, about, endpoint) => {
     return jwtDecode(data)
 }
 
-export const get = async (params) => {
-    const {data} = await $authHost.put(`api/guide/?${endpoint}`)
-    return jwtDecode(data)
+export const get = async () => {
+    const {data} = await $authHost.get(`api/guide/`)
+    return data
 }

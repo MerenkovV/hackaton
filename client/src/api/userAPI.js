@@ -1,13 +1,13 @@
 import {$host, $authHost} from './index'
 import {jwtDecode} from 'jwt-decode'
 
-export const registration = async (login, password, role, name, about) => {
-    if(role === "CLIENT" && role === "SERVICE") {
-        const {data} = await $authHost.post('api/user/registration', {login, password, role, name, about})
-        return jwtDecode(data)
+export const registration = async (login, password, role, name, description) => {
+    if(role === "CLIENT" || role === "SERVICE") {
+        const {data} = await $authHost.post('api/user/registration', {login, password, role, name, description})
+        return data
     }else{
         const {data} = await $authHost.post('api/user/registration', {login, password, role})
-        return jwtDecode(data)
+        return data
     }
     
 }
