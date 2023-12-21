@@ -22,7 +22,6 @@ const MainPage = observer(() =>{
             .catch(e=>console.log(e.message))
             .finally(()=>{
                 guide.setIsFetching(false)
-                console.log(guide.guide);
             })
     }, [])
 
@@ -85,19 +84,26 @@ const MainPage = observer(() =>{
             {
                 (machine.isFetching || guide.isFetching) ? <img src={loader} alt="" width='80px'/> :
                 <div>
-                {user.isAuth === false && machine.isLoaded ? 
+
                 <div className='main-page-info-block'>
                     <div>Информация о комплектации и технических характеристиках Вашей техники</div>
                     <div className='main-page-type-of-tables'>
                         <button onClick={() => handleTableType('info')} style={{background: tableType === 'info' ? '#3f87d9' : '#163e6c' }}>Общая информация</button>
-                        <button onClick={() => handleTableType('to')} style={{background: tableType === 'to' ? '#3f87d9' : '#163e6c' }}>ТО</button>
-                        <button onClick={() => handleTableType('advertising')} style={{background: tableType === 'advertising' ? '#3f87d9' : '#163e6c' }}>Рекламация</button>
+                        {
+                            user.isAuth && <>
+                                <button onClick={() => handleTableType('to')} style={{background: tableType === 'to' ? '#3f87d9' : '#163e6c' }}>ТО</button>
+                                <button onClick={() => handleTableType('advertising')} style={{background: tableType === 'advertising' ? '#3f87d9' : '#163e6c' }}>Рекламация</button>
+                            </>
+                        }
+                        
                     </div>
+                    {machine.isLoaded &&
                     <Table type={''} data={''}/>
+                    }
                     <div className='main-page-error'>
                         {errorMessage}
                     </div> 
-                 </div> : 
+                 </div>
                  <>
                     {
                         user.isAuth ? 
@@ -108,8 +114,7 @@ const MainPage = observer(() =>{
                         </> : <></>
                     }
                  </>
-                 
-                }
+                
                 </div>
             }
             

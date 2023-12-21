@@ -139,6 +139,7 @@ const LoginPage = observer(() =>{
                             </> 
                         : 
                             <>
+                                <h3>Создание справочников</h3>
                                 {
                                   user.user.role==='MANAGER' && 
                                     <div className='guide-wrapper'>

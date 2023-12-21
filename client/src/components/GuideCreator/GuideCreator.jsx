@@ -41,7 +41,7 @@ const GuideCreator = observer(({name, endpoint, integrated}) => {
         </div>
         <div className='guide-input-wrapper'>
             <label className='guide-label'>Описание</label>
-            <input className='guide-input' type="text" value={payload.about} onChange={e=>{setPayload({...payload, about: e.target.value})}}/>
+            <textarea className='guide-textarea' type="text" value={payload.about} onChange={e=>{setPayload({...payload, about: e.target.value})}}></textarea>
         </div>
         <div className='guide-input-wrapper'>
         {

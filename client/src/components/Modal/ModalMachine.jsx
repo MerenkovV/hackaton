@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useState } from 'react'
 import { useStore } from '../../store/RootStore'
 import {PlusCircleOutlined} from '@ant-design/icons'
-import './ModalMachine.css'
+import './Modal.css'
 import { add } from '../../api/machineAPI'
 import loader from '../../img/gears-spinner.svg'
 import GuideCreator from '../GuideCreator/GuideCreator'
@@ -259,8 +259,7 @@ const ModalMachine = observer(({setIsOpened}) => {
                 && payload.shipment_date.value.length === 0 && 'input-error'}`} type="date"
                 value={payload.shipment_date.value} onChange={(e)=>{
                   setPayload({...payload, shipment_date: {value: e.target.value, isChecked: true}})
-                }}
-                onClick={()=>console.log(payload.shipment_date.value)}/>
+                }}/>
             </div>
 
             <div className='input-wrapper'>
