@@ -22,7 +22,7 @@ const Header = observer(() => {
         user.setIsFetching(true)
         if(localStorage.getItem('token') && localStorage.getItem('token').length > 0){
             check().then((userData)=>{
-                user.setUser(userData)
+                user.setUser({...userData.jwt, username: userData.username})
                 user.setIsAuth(true)
             }).catch(e=>{console.log(e.message)}).finally(()=>user.setIsFetching(false))
         }else{
