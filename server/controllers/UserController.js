@@ -41,11 +41,27 @@ class UserController {
         let comparePassword = bcrypt.compareSync(password, user.password)
         if(!comparePassword) return next(ApiError.badRequest('Неверно введён логин/пароль'))
         const token = generateJWT(user.id, user.login, user.role)
-        return res.json({token})
+        let userName;
+        if(user.role === "SERVICE"){
+            userName = await ServiceCompany.findOne({where: {userId: user.id}})
+        }
+        if(user.role === "CLIENT"){
+            userName = await ClientCompany.findOne({where: {userId: user.id}})
+        }
+        if(userName) return res.json({token, username: userName.name})
+        else return res.json({token})
     }
     async auth (req, res, next) {
         const token = generateJWT(req.user.id, req.user.login, req.user.role)
-        return res.json({token})
+        let userName;
+        if(user.role === "SERVICE"){
+            userName = await ServiceCompany.findOne({where: {userId: user.id}})
+        }
+        if(user.role === "CLIENT"){
+            userName = await ClientCompany.findOne({where: {userId: user.id}})
+        }
+        if(userName) return res.json({token, username: userName.name})
+        else return res.json({token})
     }
 }
 

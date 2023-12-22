@@ -43,7 +43,8 @@ const LoginPage = observer(() =>{
 
             if(payload.login.length > 0 && payload.password.length > 0){
                 const userData = await login(payload.login, payload.password)
-                user.setUser(userData)
+                console.log(userData.username);
+                user.setUser({...userData.jwt, username: userData.username})
                 clearInput()
                 user.setIsAuth(true)
             }
@@ -51,7 +52,7 @@ const LoginPage = observer(() =>{
             user.setIsFetching(false)
 
         }catch(e){
-          alert(e.response.data.message)
+          console.log(e.message)
         }
       }
 
@@ -91,7 +92,7 @@ const LoginPage = observer(() =>{
                 user.isFetching ? <img src={loader} alt="" width='80px'/> :
                 (user.isAuth ? 
                     <div>
-                        <h2>Здравствуйте, {user.user.login}</h2>
+                        <h2>Здравствуйте, {user.user.username ? user.user.username : user.user.login}</h2>
                         <button className="login-page-btn" onClick={()=>{
                             localStorage.setItem('token', '')
                             user.setIsAuth(false)
@@ -139,14 +140,17 @@ const LoginPage = observer(() =>{
                             </> 
                         : 
                             <>
-                                <h3>Создание справочников</h3>
+                                
                                 {
-                                  user.user.role==='MANAGER' && 
+                                  user.user.role==='MANAGER' && <>
+                                    <h3>Создание справочников</h3>
                                     <div className='guide-wrapper'>
-                                    {
-                                        guideCreatorData.map((item, index)=><GuideCreator key={index} name={item.name} endpoint={item.endpoint}/>)
-                                    }
+                                        {
+                                            guideCreatorData.map((item, index)=><GuideCreator key={index} name={item.name} endpoint={item.endpoint}/>)
+                                        }
                                     </div>
+                                  </>
+                                    
                                 }
                             </>
                         }
