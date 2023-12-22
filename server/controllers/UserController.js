@@ -48,17 +48,20 @@ class UserController {
         if(user.role === "CLIENT"){
             userName = await ClientCompany.findOne({where: {userId: user.id}})
         }
-        return res.json({token, username: userName.name})
+        if(userName) return res.json({token, username: userName.name})
+        else return res.json({token})
     }
     async auth (req, res, next) {
         const token = generateJWT(req.user.id, req.user.login, req.user.role)
+        let userName;
         if(user.role === "SERVICE"){
             userName = await ServiceCompany.findOne({where: {userId: user.id}})
         }
         if(user.role === "CLIENT"){
             userName = await ClientCompany.findOne({where: {userId: user.id}})
         }
-        return res.json({token, username: userName.name})
+        if(userName) return res.json({token, username: userName.name})
+        else return res.json({token})
     }
 }
 

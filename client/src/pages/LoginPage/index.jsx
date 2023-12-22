@@ -47,13 +47,12 @@ const LoginPage = observer(() =>{
                 user.setUser({...userData.jwt, username: userData.username})
                 clearInput()
                 user.setIsAuth(true)
-                console.log(user.user);
             }
 
             user.setIsFetching(false)
 
         }catch(e){
-          alert(e.response.data.message)
+          console.log(e.message)
         }
       }
 
