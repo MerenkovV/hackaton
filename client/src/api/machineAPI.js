@@ -13,9 +13,8 @@ export const add = async ({technique_id, technique_model, engine_model, engine_n
     return data
 }
 
-export const getAll = async (login, password) => {
-    const {data} = await $host.post('api/user/login', {login, password})
-    localStorage.setItem('token', data.token)
+export const getAll = async () => {
+    const {data} = await $authHost.get('api/technique')
     return data
 }
 

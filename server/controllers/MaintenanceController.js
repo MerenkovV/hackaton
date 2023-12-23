@@ -28,7 +28,7 @@ class MaintenanceController {
             if(!machineCandidate) return next(ApiError.badRequest("Машины с данным id не существует"))
 
             const serviceCandidate = await ServiceCompany.findOne({where: {id: service_id}})
-            if(!serviceCandidate) return next(ApiError.badRequest("Сервиса с данным id не существует"))
+            if(!serviceCandidate && service_id !== 0) return next(ApiError.badRequest("Сервиса с данным id не существует"))
 
             if(role === 'CLIENT'){
                 let myMachine = await Machine.findAll({where: {userId: id}, attributes: ['id']})

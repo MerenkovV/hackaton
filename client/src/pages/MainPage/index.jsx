@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { getOne } from '../../api/machineAPI';
+import { getAll, getOne } from '../../api/machineAPI';
 import { useStore } from '../../store/RootStore';
 import './style.css';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import loader from '../../img/gears-spinner.svg'
 import Table from '../../components/Table/Table';
 import ModalMachine from './../../components/Modal/ModalMachine';
 import { get } from '../../api/guideAPI';
+import ModalTO from '../../components/Modal/ModalTO';
 
 const MainPage = observer(() =>{
     const [inputID, setInputID] = useState(''); //Заводской № машины введенный в поисковую строку
@@ -16,7 +17,6 @@ const MainPage = observer(() =>{
     const [tableType, setTableType] = useState('info');
     const {machine, user, guide} = useStore();
     const [hasLoaded, setHasLoaded] = useState(false);
-    //const [foundMachine, setFoundMachine] = useStore();
 
     useEffect(()=>{
         guide.setIsFetching(true)
@@ -25,7 +25,19 @@ const MainPage = observer(() =>{
             .finally(()=>{
                 guide.setIsFetching(false)
             })
+        
     }, [])
+
+    useEffect(()=>{
+        if(user.isAuth){
+            machine.setIsFetching(true)
+            getAll().then(data=>machine.setMachine(data.rows))
+                .catch(e=>console.log(e))
+                .finally(()=>{
+                    machine.setIsFetching(false)
+                })
+        }
+    }, [user.isAuth])
 
     const inputHandle = (inputID) =>{
         setMachine();
@@ -79,7 +91,7 @@ const MainPage = observer(() =>{
                 isOpened && tableType === "info" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
             }
             {
-                isOpened && tableType === "to" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
+                isOpened && tableType === "to" ? <ModalTO setIsOpened={setIsOpened}/> : <></>
             }
             {
                 isOpened && tableType === "advertising" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
