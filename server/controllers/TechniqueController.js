@@ -67,14 +67,6 @@ class TechniqueController {
 
         if(role === 'MANAGER'){
             const technicueArray = await Machine.findAndCountAll({
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: TechniqueModel},
-                    {model: EngineModel}, 
-                    {model: TransmissionModel},
-                    {model: DrivingBridgeModel}, 
-                    {model: ControlledBridgeModel},
-                ],
                 order: [
                     ['id', 'DESC']
                 ]
@@ -113,7 +105,7 @@ class TechniqueController {
 
             if(!machine) return next(ApiError.badRequest("Машина не найдена"))
             
-            return res.json({
+            return res.json([{
                 "id": machine.id,
                 "techniqueModelId": machine.techniqueModelId,
                 "engineModelId": machine.engineModelId,
@@ -124,14 +116,7 @@ class TechniqueController {
                 "driving_bridge_number": machine.driving_bridge_number,
                 "controlledBridgeModelId": machine.controlledBridgeModelId,
                 "controlled_bridge_number": machine.controlled_bridge_number,
-                "dictionary": {
-                    "technique_model": machine.technique_model,
-                    "engine_model": machine.engine_model,
-                    "transmission_model": machine.transmission_model,
-                    "driving_bridge_model": machine.driving_bridge_model,
-                    "controlled_bridge_model": machine.controlled_bridge_model,
-                }
-            })
+            }])
         }catch(error){
             return next(ApiError.badRequest(error.message))
         }

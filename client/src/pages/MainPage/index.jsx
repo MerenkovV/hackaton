@@ -70,7 +70,13 @@ const MainPage = observer(() =>{
     return(
         <div className='main-page'>
             {
-                isOpened ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
+                isOpened && tableType === "info" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
+            }
+            {
+                isOpened && tableType === "to" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
+            }
+            {
+                isOpened && tableType === "advertising" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
             }
             <div className='main-page-title'>Проверьте комплектацию и технические характеристики техники Силант</div>
             
@@ -108,9 +114,20 @@ const MainPage = observer(() =>{
                     {
                         user.isAuth ? 
                         <>
-                        <button className='button-admin' style={{background: '#163e6c' }}
-                            onClick={()=>setIsOpened(true)}>Добавить</button>
-                        <button className='button-admin' style={{background: '#163e6c' }}>Изменить</button>
+                        {
+                            user.user.role === "MANAGER" && tableType === "info" && <button className='button-admin' style={{background: '#163e6c' }}
+                            onClick={()=>setIsOpened(true)}>Добавить технику</button>
+                        }
+
+                        {   
+                            tableType === "to" && <button className='button-admin' style={{background: '#163e6c' }}
+                            onClick={()=>setIsOpened(true)}>Добавить ТО</button>
+                        }
+
+                        {   
+                            tableType === "advertising" && <button className='button-admin' style={{background: '#163e6c' }}
+                            onClick={()=>setIsOpened(true)}>Добавить рекламацию</button>
+                        }
                         </> : <></>
                     }
                  </>

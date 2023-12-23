@@ -52,16 +52,18 @@ class UserController {
         else return res.json({token})
     }
     async auth (req, res, next) {
-        const token = generateJWT(req.user.id, req.user.login, req.user.role)
-        let userName;
-        if(user.role === "SERVICE"){
-            userName = await ServiceCompany.findOne({where: {userId: user.id}})
+        const {id, login, role} = req.user
+        const token = generateJWT(id, login, role)
+        let userName = {};
+        if(role === "SERVICE"){
+            userName = await ServiceCompany.findOne({where: {userId: id}})
         }
-        if(user.role === "CLIENT"){
-            userName = await ClientCompany.findOne({where: {userId: user.id}})
+        if(role === "CLIENT"){
+            userName = await ClientCompany.findOne({where: {userId: id}})
         }
         if(userName) return res.json({token, username: userName.name})
-        else return res.json({token})
+
+        return res.json({token})
     }
 }
 

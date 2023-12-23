@@ -9,26 +9,16 @@ import GuideCreator from '../GuideCreator/GuideCreator'
 
 const ModalMachine = observer(({setIsOpened}) => {
 
-  const {guide} = useStore()
+  const {guide, machine} = useStore()
   const [loading, setLoading] = useState(false)
   const [payload, setPayload] = useState({
     technique_id: {value: '', isChecked: false},
-    technique_model: {value: '', isChecked: false},
-    engine_model: {value: '', isChecked: false},
-    engine_number: {value: '', isChecked: false},
-    transmission_model: {value: '', isChecked: false},
-    transmission_number: {value: '', isChecked: false},
-    driving_model: {value: '', isChecked: false},
-    driving_number: {value: '', isChecked: false},
-    controlled_model: {value: '', isChecked: false},
-    controlled_number: {value: '', isChecked: false},
-    delivery_number: {value: '', isChecked: false},
-    shipment_date: {value: '', isChecked: false},
-    end_user: {value: '', isChecked: false},
-    delivery_address: {value: '', isChecked: false},
-    equipment: {value: '', isChecked: false},
-    client_id: {value: '', isChecked: false},
     service_id: {value: '', isChecked: false},
+    maintenance_type: {value: '', isChecked: false},
+    maintenance_date: {value: '', isChecked: false},
+    worked: {value: '', isChecked: false},
+    order: {value: '', isChecked: false},
+    date_order: {value: '', isChecked: false},
   })
 
   const [adding, setAdding] = useState({
@@ -83,27 +73,27 @@ const ModalMachine = observer(({setIsOpened}) => {
     <div className='modal-wrapper'>
         <div className='modal-back' onClick={()=>setIsOpened(false)}></div>
         <div className='modal-window'>
-            <h2 className='modal-header'>Добавить технику</h2>
-            <div className='input-wrapper'>
+            <h2 className='modal-header'>Добавить ТО</h2>
+            {/* <div className='input-wrapper'>
               <label className='modal-label'>Зав. № машины</label>
               <input className={`modal-input ${payload.technique_id.isChecked 
                 && payload.technique_id.value.length === 0 && 'input-error'}`} 
                 type="text" value={payload.technique_id.value} onChange={(e)=>{
                   setPayload({...payload, technique_id: {value: e.target.value, isChecked: true}})
                 }}/>
-            </div>
+            </div> */}
             
             <div className='input-wrapper'>
-              <label className='modal-label'>Модель техники</label>
+              <label className='modal-label'>Заводской номер машины</label>
               <div className='select-wrapper'>
-                <select className={`modal-select ${payload.technique_model.isChecked 
-                && payload.technique_model.value.length === 0 && 'input-error'}`}
-                  value={payload.technique_model.value} onChange={(e)=>{
-                    setPayload({...payload, technique_model: {value: e.target.value, isChecked: true}})
+                <select className={`modal-select ${payload.technique_id.isChecked 
+                && payload.technique_id.value.length === 0 && 'input-error'}`}
+                  value={payload.technique_id.value} onChange={(e)=>{
+                    setPayload({...payload, technique_id: {value: e.target.value, isChecked: true}})
                   }}>
                     <option value="">------</option>
                   {
-                    guide.guide?.technique?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
+                    machine.machine?.map(item=><option key={item.id} value={item.id}>{item.id}</option>)
                   }
                 </select>
                 <button className='select-button' onClick={()=>{

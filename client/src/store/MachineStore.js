@@ -5,7 +5,7 @@ export default class MachineStore {
     constructor(){
         this._isFetching = false
         this._isLoaded = false
-        this._machine = {}
+        this._machine = []
         makeAutoObservable(this)
     }
 

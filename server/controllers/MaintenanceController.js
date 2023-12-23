@@ -7,6 +7,7 @@ const { Machine, ServiceCompany, Maintenance, MaintenanceType } = require('../mo
 class MaintenanceController {
     async create (req, res, next) {
         try {
+            const {id, role} = req.user
             let {
                     technique_id, service_id, maintenance_type,
                     maintenance_date, worked, order,
@@ -28,6 +29,13 @@ class MaintenanceController {
 
             const serviceCandidate = await ServiceCompany.findOne({where: {id: service_id}})
             if(!serviceCandidate) return next(ApiError.badRequest("Сервиса с данным id не существует"))
+
+            if(role === 'CLIENT'){
+                let myMachine = await Machine.findAll({where: {userId: id}, attributes: ['id']})
+                myMachine = myMachine.map(item=>item.dataValues.id)
+                const endArray = myMachine.filter((id)=>id===technique_id)
+                if(!endArray) return next(ApiError.badRequest("У вас нет такой техники"))
+            }
 
             const machine = await Maintenance.create({
                 date_maintenance: maintenance_date,
