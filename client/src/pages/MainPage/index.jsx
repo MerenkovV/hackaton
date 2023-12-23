@@ -14,7 +14,9 @@ const MainPage = observer(() =>{
     const [isOpened, setIsOpened] = useState(false)
     const [errorMessage, setErrorMessage] = useState();
     const [tableType, setTableType] = useState('info');
-    const {machine, user, guide} = useStore()
+    const {machine, user, guide} = useStore();
+    const [hasLoaded, setHasLoaded] = useState(false);
+    //const [foundMachine, setFoundMachine] = useStore();
 
     useEffect(()=>{
         guide.setIsFetching(true)
@@ -27,6 +29,7 @@ const MainPage = observer(() =>{
 
     const inputHandle = (inputID) =>{
         setMachine();
+        setHasLoaded(false);
         setErrorMessage('');
         setInputID(inputID.target.value)
         if(inputID.target.value === '')
@@ -38,17 +41,20 @@ const MainPage = observer(() =>{
             machine.setIsFetching(true)
             const machineInfo = await getOne(inputID)
             if(machineInfo) {
-                machine.setMachine(machineInfo)
-                machine.setIsLoaded(true)
+                machine.setMachine(machineInfo);
+                machine.setIsLoaded(true);
+                setHasLoaded(true);
+                setMachine(machineInfo);
             }
-            machine.setIsFetching(false)
+            machine.setIsFetching(false);
             setTableType('info');
             if(!machineInfo){
                 setErrorMessage('Ничего не найдено');
+                setHasLoaded(false);
             }
         }
-        
     }
+
 
     const handleTableType = (type) => {
         switch (type){
@@ -80,13 +86,17 @@ const MainPage = observer(() =>{
             }
             <div className='main-page-title'>Проверьте комплектацию и технические характеристики техники Силант</div>
             
-            {
+            {/*
                 user.isAuth ? <></> :
                 <div className='main-page-search-block'>
                     <input className='main-page-input' placeholder='Заводской номер' type='text' onChange={inputHandle} value={inputID}/>
                     <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
                 </div>
-            }
+            */}
+                <div className='main-page-search-block'>
+                    <input className='main-page-input' placeholder='Заводской номер' type='text' onChange={inputHandle} value={inputID}/>
+                    <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
+                </div>
             {
                 (machine.isFetching || guide.isFetching) ? <img src={loader} alt="" width='80px'/> :
                 <div>
@@ -101,16 +111,15 @@ const MainPage = observer(() =>{
                                 <button onClick={() => handleTableType('advertising')} style={{background: tableType === 'advertising' ? '#3f87d9' : '#163e6c' }}>Рекламация</button>
                             </>
                         }
-                        
                     </div>
-                    {machine.isLoaded &&
-                    <Table type={''} data={''}/>
+                    {hasLoaded ? 
+                        <Table type={tableType} isAuth={user.isAuth} userRole={user.user.role}  data={foundMachine}/> : null
                     }
                     <div className='main-page-error'>
                         {errorMessage}
                     </div> 
                  </div>
-                 <>
+                 <div className='main-page-editing-block'>
                     {
                         user.isAuth ? 
                         <>
@@ -130,7 +139,7 @@ const MainPage = observer(() =>{
                         }
                         </> : <></>
                     }
-                 </>
+                 </div>
                 
                 </div>
             }
