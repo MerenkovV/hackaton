@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { getAll, getOne } from '../../api/machineAPI';
+import { getAll as getMainterance} from '../../api/maintenanceAPI';
+import { getAll as getComplaint} from '../../api/complaintAPI';
 import { useStore } from '../../store/RootStore';
 import './style.css';
 import { useEffect, useState } from 'react';
@@ -8,6 +10,7 @@ import Table from '../../components/Table/Table';
 import ModalMachine from './../../components/Modal/ModalMachine';
 import { get } from '../../api/guideAPI';
 import ModalTO from '../../components/Modal/ModalTO';
+import ModalComplaint from '../../components/Modal/ModalComplaint';
 
 const MainPage = observer(() =>{
     const [inputID, setInputID] = useState(''); //Заводской № машины введенный в поисковую строку
@@ -15,7 +18,7 @@ const MainPage = observer(() =>{
     const [isOpened, setIsOpened] = useState(false)
     const [errorMessage, setErrorMessage] = useState();
     const [tableType, setTableType] = useState('info');
-    const {machine, user, guide} = useStore();
+    const {machine, user, guide, mainterance, complaint} = useStore();
     const [hasLoaded, setHasLoaded] = useState(false);
 
     useEffect(()=>{
@@ -25,11 +28,10 @@ const MainPage = observer(() =>{
             .finally(()=>{
                 guide.setIsFetching(false)
             })
-        
     }, [])
 
     useEffect(()=>{
-        if(user.isAuth){
+        if(user.isAuth && user.user?.role !== 'ADMIN'){
             machine.setIsFetching(true)
             getAll().then(data=>machine.setMachine(data.rows))
                 .catch(e=>console.log(e))
@@ -38,6 +40,31 @@ const MainPage = observer(() =>{
                 })
         }
     }, [user.isAuth])
+
+    useEffect(()=>{
+        if(tableType === "to"){
+            mainterance.setIsFetching(true)
+            getMainterance().then(data=>{
+                console.log(data);
+                mainterance.setMainterance(data.rows)
+            })
+                .catch(e=>console.log(e))
+                .finally(()=>{
+                    mainterance.setIsFetching(false)
+                })
+        }
+        if(tableType === "advertising"){
+            complaint.setIsFetching(true)
+            getComplaint().then(data=>{
+                console.log(data);
+                complaint.setComplaint(data.rows)
+            })
+                .catch(e=>console.log(e))
+                .finally(()=>{
+                    complaint.setIsFetching(false)
+                })
+        }
+    }, [tableType])
 
     const inputHandle = (inputID) =>{
         setMachine();
@@ -94,9 +121,8 @@ const MainPage = observer(() =>{
                 isOpened && tableType === "to" ? <ModalTO setIsOpened={setIsOpened}/> : <></>
             }
             {
-                isOpened && tableType === "advertising" ? <ModalMachine setIsOpened={setIsOpened}/> : <></>
+                isOpened && tableType === "advertising" ? <ModalComplaint setIsOpened={setIsOpened}/> : <></>
             }
-            <div className='main-page-title'>Проверьте комплектацию и технические характеристики техники Силант</div>
             
             {/*
                 user.isAuth ? <></> :
@@ -105,10 +131,16 @@ const MainPage = observer(() =>{
                     <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
                 </div>
             */}
-                <div className='main-page-search-block'>
-                    <input className='main-page-input' placeholder='Заводской номер' type='text' onChange={inputHandle} value={inputID}/>
-                    <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
-                </div>
+            {
+                (!user.isAuth || user.user?.role === 'ADMIN') && <>
+                    <div className='main-page-title'>Проверьте комплектацию и технические характеристики техники Силант</div>
+                    <div className='main-page-search-block'>
+                        <input className='main-page-input' placeholder='Заводской номер' type='text' onChange={inputHandle} value={inputID}/>
+                        <button className='main-page-search-button' onClick={findMachine}>Поиск</button>
+                    </div>
+                </>
+            }
+                
             {
                 (machine.isFetching || guide.isFetching) ? <img src={loader} alt="" width='80px'/> :
                 <div>
@@ -118,14 +150,14 @@ const MainPage = observer(() =>{
                     <div className='main-page-type-of-tables'>
                         <button onClick={() => handleTableType('info')} style={{background: tableType === 'info' ? '#3f87d9' : '#163e6c' }}>Общая информация</button>
                         {
-                            user.isAuth && <>
+                            user.isAuth && user?.user?.role !== 'ADMIN' && <>
                                 <button onClick={() => handleTableType('to')} style={{background: tableType === 'to' ? '#3f87d9' : '#163e6c' }}>ТО</button>
                                 <button onClick={() => handleTableType('advertising')} style={{background: tableType === 'advertising' ? '#3f87d9' : '#163e6c' }}>Рекламация</button>
                             </>
                         }
                     </div>
-                    {hasLoaded ? 
-                        <Table type={tableType} isAuth={user.isAuth} userRole={user.user.role}  data={foundMachine}/> : null
+                    {
+                        (machine.isFetching || guide.isFetching || mainterance.isFetching || complaint.isFetching) ? <img src={loader} alt="" width='80px'/> : <Table type={tableType}/>
                     }
                     <div className='main-page-error'>
                         {errorMessage}

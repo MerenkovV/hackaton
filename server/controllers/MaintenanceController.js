@@ -28,7 +28,7 @@ class MaintenanceController {
             if(!machineCandidate) return next(ApiError.badRequest("Машины с данным id не существует"))
 
             const serviceCandidate = await ServiceCompany.findOne({where: {id: service_id}})
-            if(!serviceCandidate && service_id !== "0") return next(ApiError.badRequest("Сервиса с данным id не существует"))
+            if(!serviceCandidate) return next(ApiError.badRequest("Сервиса с данным id не существует"))
 
             if(role === 'CLIENT'){
                 let myMachine = await Machine.findAll({where: {userId: id}, attributes: ['id']})
@@ -58,10 +58,6 @@ class MaintenanceController {
 
         if(role === 'MANAGER'){
             const technicueArray = await Maintenance.findAndCountAll({
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: MaintenanceType},
-                ],
                 order: [
                     ['date_maintenance', 'ASC']
                 ]
@@ -74,10 +70,6 @@ class MaintenanceController {
             myMachine = myMachine.map(item=>item.dataValues.id)
             const technicueArray = await Maintenance.findAndCountAll({
                 where: {machineId: myMachine},
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: MaintenanceType},
-                ],
                 order: [
                     ['date_maintenance', 'DESC']
                 ]
@@ -89,10 +81,6 @@ class MaintenanceController {
             const ServiceCheck = await ServiceCompany.findOne({where: {userId: id}})
             const technicueArray = await Maintenance.findAndCountAll({
                 where: {serviceCompanyId: ServiceCheck.id},
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: MaintenanceType},
-                ],
                 order: [
                     ['date_maintenance', 'DESC']
                 ]

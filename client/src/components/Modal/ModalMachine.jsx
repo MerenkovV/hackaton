@@ -318,7 +318,7 @@ const ModalMachine = observer(({setIsOpened}) => {
             </div>
             <div className='input-wrapper'>
               {
-                loading ? <img src={loader} alt="" width='60px'/> : 
+                loading ? <img src={loader} alt="" width='50px'/> : 
                 <button className='modal-button' onClick={addMachine}>Создать</button>
               }
               

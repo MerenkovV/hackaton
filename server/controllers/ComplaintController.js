@@ -52,11 +52,6 @@ class ComplaintController {
 
         if(role === 'MANAGER'){
             const complaintsArray = await Complaints.findAndCountAll({
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: RefusalType},
-                    {model: RecoveryMethod},
-                ],
                 order: [
                     ['date_complaints', 'ASC']
                 ]
@@ -69,11 +64,6 @@ class ComplaintController {
             myMachine = myMachine.map(item=>item.dataValues.id)
             const complaintsArray = await Complaints.findAndCountAll({
                 where: {machineId: myMachine},
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: RefusalType},
-                    {model: RecoveryMethod},
-                ],
                 order: [
                     ['date_complaints', 'DESC']
                 ]
@@ -86,11 +76,6 @@ class ComplaintController {
             const ServiceCheck = await ServiceCompany.findOne({where: {userId: id}})
             const complaintsArray = await Complaints.findAndCountAll({
                 where: {serviceCompanyId: ServiceCheck.id},
-                include: [
-                    {model: ServiceCompany}, 
-                    {model: RefusalType},
-                    {model: RecoveryMethod},
-                ],
                 order: [
                     ['date_complaints', 'DESC']
                 ]

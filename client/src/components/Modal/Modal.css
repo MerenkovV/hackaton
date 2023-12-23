@@ -61,6 +61,10 @@
     border-radius: 6px;
 }
 
+.modal-textarea{
+    resize: vertical;
+}
+
 .modal-select{
     position: relative;
     justify-self: start;
