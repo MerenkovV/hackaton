@@ -46,6 +46,13 @@
 .main-page-info-head-tr > th{
     font-weight: 200;
     padding: 5px;
+    position: relative;
+}
+
+.main-page-info-head-tr > th > span{
+    position: absolute;
+    top: 3px;
+    right: 3px;
 }
 
 .main-page-info-head-tr > th:first-child{

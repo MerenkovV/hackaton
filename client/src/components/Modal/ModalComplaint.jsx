@@ -9,7 +9,7 @@ import GuideCreator from '../GuideCreator/GuideCreator'
 
 const ModalComplaint = observer(({setIsOpened}) => {
 
-  const {guide, machine, complaint} = useStore()
+  const {guide, machine, complaint, user} = useStore()
   const [loading, setLoading] = useState(false)
   const [payload, setPayload] = useState({
     technique_id: {value: '', isChecked: false},
@@ -133,10 +133,14 @@ const ModalComplaint = observer(({setIsOpened}) => {
                   guide.guide?.refusal?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                 }
               </select>
-              <button className='select-button' onClick={()=>{
+              {
+                user.user?.role === "MANAGER" &&  
+                <button className='select-button' onClick={()=>{
                   const newValue = !adding.refusal
                   setAdding({...adding, refusal: newValue})
                 }}><PlusCircleOutlined /></button>
+              }
+             
             </div>
               {
                 adding.refusal && <GuideCreator name='Узел отказа' endpoint='refusal' integrated={true}/>
@@ -165,10 +169,13 @@ const ModalComplaint = observer(({setIsOpened}) => {
                   guide.guide?.recovery?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                 }
               </select>
+              {
+                user.user?.role === "MANAGER" &&
               <button className='select-button' onClick={()=>{
                   const newValue = !adding.recovery
                   setAdding({...adding, recovery: newValue})
                 }}><PlusCircleOutlined /></button>
+              }
             </div>
               {
                 adding.recovery && <GuideCreator name='Способ восстановления' endpoint='recovery' integrated={true}/>

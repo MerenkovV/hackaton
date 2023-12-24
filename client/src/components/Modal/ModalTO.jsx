@@ -9,7 +9,7 @@ import GuideCreator from '../GuideCreator/GuideCreator'
 
 const ModalTO = observer(({setIsOpened}) => {
 
-  const {guide, machine, mainterance} = useStore()
+  const {guide, machine, mainterance, user} = useStore()
   const [loading, setLoading] = useState(false)
   const [payload, setPayload] = useState({
     technique_id: {value: '', isChecked: false},
@@ -106,10 +106,13 @@ const ModalTO = observer(({setIsOpened}) => {
                     guide.guide?.maintenance?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                   }
                 </select>
-                <button className='select-button' onClick={()=>{
-                  const newValue = !adding.maintenance
-                  setAdding({...adding, maintenance: newValue})
-                }}><PlusCircleOutlined /></button>
+                {
+                user.user?.role === "MANAGER" &&
+                  <button className='select-button' onClick={()=>{
+                    const newValue = !adding.maintenance
+                    setAdding({...adding, maintenance: newValue})
+                  }}><PlusCircleOutlined /></button>
+                }
               </div>
               {
                 adding.maintenance && <GuideCreator name='Вид ТО' endpoint='maintenance' integrated={true}/>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import { useStore } from '../../store/RootStore';
 import { observer } from 'mobx-react-lite';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 
 const Table = observer(({type}) => {
@@ -984,7 +985,10 @@ const Table = observer(({type}) => {
         <table className='main-table' style={{width: user.isAuth && user?.user?.role !== 'ADMIN' ? '2300px' : '1200px'}}>
             <thead>
                 <tr className='main-page-info-head-tr'>
-                    {headerArray.map((item, index)=><th key={index} onClick={()=>sortInserted(index+1)}>{item}</th>)}
+                    {headerArray.map((item, index)=><th key={index} onClick={()=>sortInserted(index+1)}>{item}
+                    {sortCol === (index+1) ? <CaretUpOutlined /> : (0 - sortCol) === (index+1) && 
+                        <CaretDownOutlined />
+                    }</th>)}
                 </tr>
             </thead>
             <tbody>
