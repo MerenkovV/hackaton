@@ -166,7 +166,9 @@ const ModalTO = observer(({setIsOpened}) => {
                 }}>
                   <option value="">------</option>
                 {
-                  guide.guide?.service?.map(item=><option key={item.id} value={item.id}>{item.name}</option>)
+                  user.user.role !== "SERVICE" ? 
+                  guide.guide?.service?.map(item=><option key={item.id} value={item.id}>{item.name}</option>) :
+                  guide.guide?.service?.filter((item)=>item.userId === user.user.id).map(item=><option key={item.id} value={item.id}>{item.name}</option>)
                 }
               </select>
             </div>
