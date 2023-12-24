@@ -17,14 +17,17 @@
 
 .header-second-container{
     position: absolute;
-    z-index: 1;
+    z-index: 11;
     top: 30px;
     display: flex;
     min-width: 150px;
-    width: 100%;
+    width: 300px;
     justify-content: center;
     align-items: center;
     gap: 30px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .header-tg{
@@ -53,6 +56,8 @@
     .header-second-container{
         position: relative;
         margin-bottom: 50px;
+        left: auto;
+        transform: translateX(0);
     }
     .header-title{
         margin-bottom: 30px;

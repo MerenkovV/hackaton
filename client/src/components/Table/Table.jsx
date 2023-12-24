@@ -985,7 +985,7 @@ const Table = observer(({type}) => {
         <table className='main-table' style={{width: user.isAuth && user?.user?.role !== 'ADMIN' ? '2300px' : '1200px'}}>
             <thead>
                 <tr className='main-page-info-head-tr'>
-                    {headerArray.map((item, index)=><th key={index} onClick={()=>sortInserted(index+1)}>{item}
+                    {headerArray.map((item, index)=><th key={index} onClick={()=>user.isAuth && sortInserted(index+1)}>{item}
                     {sortCol === (index+1) ? <CaretUpOutlined /> : (0 - sortCol) === (index+1) && 
                         <CaretDownOutlined />
                     }</th>)}
