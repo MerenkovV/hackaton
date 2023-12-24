@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import { useStore } from '../../store/RootStore'
 import {PlusCircleOutlined} from '@ant-design/icons'
 import './Modal.css'
-import { add } from '../../api/maintenanceAPI'
+import { add, getAll } from '../../api/maintenanceAPI'
 import loader from '../../img/gears-spinner.svg'
 import GuideCreator from '../GuideCreator/GuideCreator'
 
 const ModalTO = observer(({setIsOpened}) => {
 
-  const {guide, machine} = useStore()
+  const {guide, machine, mainterance} = useStore()
   const [loading, setLoading] = useState(false)
   const [payload, setPayload] = useState({
     technique_id: {value: '', isChecked: false},
@@ -55,6 +55,16 @@ const ModalTO = observer(({setIsOpened}) => {
       await add(payloadValues).then(()=>{
         clearInput()
         alert('ТО добавлено')
+
+        mainterance.setIsFetching(true)
+            getAll().then(data=>{
+                mainterance.setMainterance(data.rows)
+            })
+                .catch(e=>console.log(e))
+                .finally(()=>{
+                    mainterance.setIsFetching(false)
+                })
+                
       }).catch(e=>console.log(e.message))
       
       setLoading(false)

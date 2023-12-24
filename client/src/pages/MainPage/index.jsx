@@ -45,7 +45,6 @@ const MainPage = observer(() =>{
         if(tableType === "to"){
             mainterance.setIsFetching(true)
             getMainterance().then(data=>{
-                console.log(data);
                 mainterance.setMainterance(data.rows)
             })
                 .catch(e=>console.log(e))
@@ -56,7 +55,6 @@ const MainPage = observer(() =>{
         if(tableType === "advertising"){
             complaint.setIsFetching(true)
             getComplaint().then(data=>{
-                console.log(data);
                 complaint.setComplaint(data.rows)
             })
                 .catch(e=>console.log(e))

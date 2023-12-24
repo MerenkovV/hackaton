@@ -9,6 +9,7 @@ const Table = observer(({type}) => {
     const {machine, user, guide, mainterance, complaint} = useStore()
     let [headerArray, setHeaderArray] = useState([]);
     let [guideInserted, setGuideInserted] = useState({})
+    let [sortCol, setSortCol] = useState(0)
 
     const MachineInsert = () =>{
         if(!user.isAuth || user.user?.role === 'ADMIN'){
@@ -120,6 +121,817 @@ const Table = observer(({type}) => {
         setGuideInserted(rawInsertedArray)
     }
 
+    // const sortFunction = (a, b) => {
+    //     if (a.name > b.name) {
+    //         return 1;
+    //       }
+    //       if (a.name < b.name) {
+    //         return -1;
+    //       }
+    //       // a должно быть равным b
+    //       return 0;
+    // }
+
+    const sortInserted = (col) => {
+        if(guideInserted){
+            let guideInsertedCopy = [...guideInserted]
+
+            if(col === sortCol){
+                if(type === "info"){
+                    switch (col){
+                        case 1:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.id > b.id) {
+                                    return -1;
+                                }
+                                if (a.id < b.id) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 2:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.techniqueModelId?.name > b.techniqueModelId?.name) {
+                                    return -1;
+                                }
+                                if (a.techniqueModelId?.name < b.techniqueModelId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 3:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.engineModelId?.name > b.engineModelId?.name) {
+                                    return -1;
+                                }
+                                if (a.engineModelId?.name < b.engineModelId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 4:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.engine_number > b.engine_number) {
+                                    return -1;
+                                }
+                                if (a.engine_number < b.engine_number) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 5:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.transmissionModelId?.name > b.transmissionModelId?.name) {
+                                    return -1;
+                                }
+                                if (a.transmissionModelId?.name < b.transmissionModelId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 6:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.transmission_number > b.transmission_number) {
+                                    return -1;
+                                }
+                                if (a.transmission_number < b.transmission_number) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 7:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.drivingBridgeModelId?.name > b.drivingBridgeModelId?.name) {
+                                    return -1;
+                                }
+                                if (a.drivingBridgeModelId?.name < b.drivingBridgeModelId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 8:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.driving_bridge_number > b.driving_bridge_number) {
+                                    return -1;
+                                }
+                                if (a.driving_bridge_number < b.driving_bridge_number) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 9:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.controlledBridgeModelId?.name > b.controlledBridgeModelId?.name) {
+                                    return -1;
+                                }
+                                if (a.controlledBridgeModelId?.name < b.controlledBridgeModelId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 10:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.controlled_bridge_number > b.controlled_bridge_number) {
+                                    return -1;
+                                }
+                                if (a.controlled_bridge_number < b.controlled_bridge_number) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 11:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.delivery_number > b.delivery_number) {
+                                    return -1;
+                                }
+                                if (a.delivery_number < b.delivery_number) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 12:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.shipment_date > b.shipment_date) {
+                                    return -1;
+                                }
+                                if (a.shipment_date < b.shipment_date) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 13:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.end_user > b.end_user) {
+                                    return -1;
+                                }
+                                if (a.end_user < b.end_user) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 14:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.delivery_address > b.delivery_address) {
+                                    return -1;
+                                }
+                                if (a.delivery_address < b.delivery_address) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 15:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.equipment > b.equipment) {
+                                    return -1;
+                                }
+                                if (a.equipment < b.equipment) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 16:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.userId?.name > b.userId?.name) {
+                                    return -1;
+                                }
+                                if (a.userId?.name < b.userId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 17:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.serviceCompanyId?.name > b.serviceCompanyId?.name) {
+                                    return -1;
+                                }
+                                if (a.serviceCompanyId?.name < b.serviceCompanyId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        default: break
+                    }
+                    
+                }
+                if(type === "to"){
+                    switch (col){
+                        case 1:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.machineId > b.machineId) {
+                                    return -1;
+                                }
+                                if (a.machineId < b.machineId) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 2:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.serviceCompanyId?.name > b.serviceCompanyId?.name) {
+                                    return -1;
+                                }
+                                if (a.serviceCompanyId?.name < b.serviceCompanyId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 3:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.maintenanceTypeId?.name > b.maintenanceTypeId?.name) {
+                                    return -1;
+                                }
+                                if (a.maintenanceTypeId?.name < b.maintenanceTypeId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 4:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_maintenance > b.date_maintenance) {
+                                    return -1;
+                                }
+                                if (a.date_maintenance < b.date_maintenance) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 5:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.worked > b.worked) {
+                                    return -1;
+                                }
+                                if (a.worked < b.worked) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 6:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.order > b.order) {
+                                    return -1;
+                                }
+                                if (a.order < b.order) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 7:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_order > b.date_order) {
+                                    return -1;
+                                }
+                                if (a.date_order < b.date_order) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        default: break
+                    }
+                }
+                if(type === "advertising"){
+                    switch (col){
+                        case 1:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.machineId > b.machineId) {
+                                    return -1;
+                                }
+                                if (a.machineId < b.machineId) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 2:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.serviceCompanyId?.name > b.serviceCompanyId?.name) {
+                                    return -1;
+                                }
+                                if (a.serviceCompanyId?.name < b.serviceCompanyId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 3:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_complaints > b.date_complaints) {
+                                    return -1;
+                                }
+                                if (a.date_complaints < b.date_complaints) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 4:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.worked > b.worked) {
+                                    return -1;
+                                }
+                                if (a.worked < b.worked) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 5:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.refusalTypeId?.name > b.refusalTypeId?.name) {
+                                    return -1;
+                                }
+                                if (a.refusalTypeId?.name < b.refusalTypeId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 6:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.description > b.description) {
+                                    return -1;
+                                }
+                                if (a.description < b.description) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 7:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.recoveryMethodId?.name > b.recoveryMethodId?.name) {
+                                    return -1;
+                                }
+                                if (a.recoveryMethodId?.name < b.recoveryMethodId?.name) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 8:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.spare_parts > b.spare_parts) {
+                                    return -1;
+                                }
+                                if (a.spare_parts < b.spare_parts) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 9:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_repair > b.date_repair) {
+                                    return -1;
+                                }
+                                if (a.date_repair < b.date_repair) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 10:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.downtime > b.downtime) {
+                                    return -1;
+                                }
+                                if (a.downtime < b.downtime) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        default: break
+                    }
+                }
+                setSortCol(0 - col)
+                setGuideInserted(guideInsertedCopy)
+            }else{
+                if(type === "info"){
+                    switch (col){
+                        case 1:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.id > b.id) {
+                                    return 1;
+                                }
+                                if (a.id < b.id) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 2:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.techniqueModelId?.name > b.techniqueModelId?.name) {
+                                    return 1;
+                                }
+                                if (a.techniqueModelId?.name < b.techniqueModelId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 3:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.engineModelId?.name > b.engineModelId?.name) {
+                                    return 1;
+                                }
+                                if (a.engineModelId?.name < b.engineModelId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 4:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.engine_number > b.engine_number) {
+                                    return 1;
+                                }
+                                if (a.engine_number < b.engine_number) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 5:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.transmissionModelId?.name > b.transmissionModelId?.name) {
+                                    return 1;
+                                }
+                                if (a.transmissionModelId?.name < b.transmissionModelId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 6:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.transmission_number > b.transmission_number) {
+                                    return 1;
+                                }
+                                if (a.transmission_number < b.transmission_number) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 7:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.drivingBridgeModelId?.name > b.drivingBridgeModelId?.name) {
+                                    return 1;
+                                }
+                                if (a.drivingBridgeModelId?.name < b.drivingBridgeModelId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 8:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.driving_bridge_number > b.driving_bridge_number) {
+                                    return 1;
+                                }
+                                if (a.driving_bridge_number < b.driving_bridge_number) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 9:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.controlledBridgeModelId?.name > b.controlledBridgeModelId?.name) {
+                                    return 1;
+                                }
+                                if (a.controlledBridgeModelId?.name < b.controlledBridgeModelId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 10:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.controlled_bridge_number > b.controlled_bridge_number) {
+                                    return 1;
+                                }
+                                if (a.controlled_bridge_number < b.controlled_bridge_number) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 11:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.delivery_number > b.delivery_number) {
+                                    return 1;
+                                }
+                                if (a.delivery_number < b.delivery_number) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 12:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.shipment_date > b.shipment_date) {
+                                    return 1;
+                                }
+                                if (a.shipment_date < b.shipment_date) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 13:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.end_user > b.end_user) {
+                                    return 1;
+                                }
+                                if (a.end_user < b.end_user) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 14:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.delivery_address > b.delivery_address) {
+                                    return 1;
+                                }
+                                if (a.delivery_address < b.delivery_address) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 15:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.equipment > b.equipment) {
+                                    return 1;
+                                }
+                                if (a.equipment < b.equipment) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 16:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.userId?.name > b.userId?.name) {
+                                    return 1;
+                                }
+                                if (a.userId?.name < b.userId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 17:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.serviceCompanyId?.name > b.serviceCompanyId?.name) {
+                                    return 1;
+                                }
+                                if (a.serviceCompanyId?.name < b.serviceCompanyId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        default: break
+                    }
+                    
+                }
+                if(type === "to"){
+                    switch (col){
+                        case 1:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.machineId > b.machineId) {
+                                    return 1;
+                                }
+                                if (a.machineId < b.machineId) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 2:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.serviceCompanyId?.name > b.serviceCompanyId?.name) {
+                                    return 1;
+                                }
+                                if (a.serviceCompanyId?.name < b.serviceCompanyId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 3:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.maintenanceTypeId?.name > b.maintenanceTypeId?.name) {
+                                    return 1;
+                                }
+                                if (a.maintenanceTypeId?.name < b.maintenanceTypeId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 4:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_maintenance > b.date_maintenance) {
+                                    return 1;
+                                }
+                                if (a.date_maintenance < b.date_maintenance) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 5:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.worked > b.worked) {
+                                    return 1;
+                                }
+                                if (a.worked < b.worked) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 6:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.order > b.order) {
+                                    return 1;
+                                }
+                                if (a.order < b.order) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 7:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_order > b.date_order) {
+                                    return 1;
+                                }
+                                if (a.date_order < b.date_order) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        default: break
+                    }
+                }
+                if(type === "advertising"){
+                    switch (col){
+                        case 1:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.machineId > b.machineId) {
+                                    return 1;
+                                }
+                                if (a.machineId < b.machineId) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 2:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.serviceCompanyId?.name > b.serviceCompanyId?.name) {
+                                    return 1;
+                                }
+                                if (a.serviceCompanyId?.name < b.serviceCompanyId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 3:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_complaints > b.date_complaints) {
+                                    return 1;
+                                }
+                                if (a.date_complaints < b.date_complaints) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 4:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.worked > b.worked) {
+                                    return 1;
+                                }
+                                if (a.worked < b.worked) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 5:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.refusalTypeId?.name > b.refusalTypeId?.name) {
+                                    return 1;
+                                }
+                                if (a.refusalTypeId?.name < b.refusalTypeId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 6:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.description > b.description) {
+                                    return 1;
+                                }
+                                if (a.description < b.description) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 7:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.recoveryMethodId?.name > b.recoveryMethodId?.name) {
+                                    return 1;
+                                }
+                                if (a.recoveryMethodId?.name < b.recoveryMethodId?.name) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 8:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.spare_parts > b.spare_parts) {
+                                    return 1;
+                                }
+                                if (a.spare_parts < b.spare_parts) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 9:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.date_repair > b.date_repair) {
+                                    return 1;
+                                }
+                                if (a.date_repair < b.date_repair) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        case 10:
+                            guideInsertedCopy.sort((a,b)=>{
+                                if (a.downtime > b.downtime) {
+                                    return 1;
+                                }
+                                if (a.downtime < b.downtime) {
+                                    return -1;
+                                }
+                                return 0;
+                            })
+                        break;
+                        default: break
+                    }
+                }
+                setSortCol(col)
+                setGuideInserted(guideInsertedCopy)
+            }
+        
+        }
+        
+    }
+
+    useEffect(()=>{
+        setSortCol(0)
+    }, [type])
+
     useEffect(()=>{
         if(!machine.isFetching && !guide.isFetching && type === "info") MachineInsert()
         if(!mainterance.isFetching && !guide.isFetching && type === "to") MainteranceInsert()
@@ -172,7 +984,7 @@ const Table = observer(({type}) => {
         <table className='main-table' style={{width: user.isAuth && user?.user?.role !== 'ADMIN' ? '2300px' : '1200px'}}>
             <thead>
                 <tr className='main-page-info-head-tr'>
-                    {headerArray.map((item, index)=><th key={index}>{item}</th>)}
+                    {headerArray.map((item, index)=><th key={index} onClick={()=>sortInserted(index+1)}>{item}</th>)}
                 </tr>
             </thead>
             <tbody>

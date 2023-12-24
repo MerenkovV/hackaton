@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { useStore } from '../../store/RootStore'
 import {PlusCircleOutlined} from '@ant-design/icons'
 import './Modal.css'
-import { add } from '../../api/complaintAPI'
+import { add, getAll } from '../../api/complaintAPI'
 import loader from '../../img/gears-spinner.svg'
 import GuideCreator from '../GuideCreator/GuideCreator'
 
 const ModalComplaint = observer(({setIsOpened}) => {
 
-  const {guide, machine} = useStore()
+  const {guide, machine, complaint} = useStore()
   const [loading, setLoading] = useState(false)
   const [payload, setPayload] = useState({
     technique_id: {value: '', isChecked: false},
@@ -63,6 +63,15 @@ const ModalComplaint = observer(({setIsOpened}) => {
       await add(payloadValues).then(()=>{
         clearInput()
         alert('Рекламация добавлена')
+
+        complaint.setIsFetching(true)
+            getAll().then(data=>{
+                complaint.setComplaint(data.rows)
+            })
+                .catch(e=>console.log(e))
+                .finally(()=>{
+                    complaint.setIsFetching(false)
+                })
       }).catch(e=>console.log(e.message))
       
       setLoading(false)

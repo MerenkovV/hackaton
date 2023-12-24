@@ -19,12 +19,13 @@
 }
 
 .main-page-info-tr{
-    cursor: pointer;
+    /* cursor: pointer; */
     background-color: #f5f5f5;
 }
 
 .main-page-info-tr > td{
     padding: 10px;
+    
 }
 
 .main-page-info-tr:last-child > td:first-child{
@@ -39,6 +40,7 @@
     padding: 5px;
     color: white;
     background-color: #163e6c;
+    cursor: pointer;
 }
 
 .main-page-info-head-tr > th{
